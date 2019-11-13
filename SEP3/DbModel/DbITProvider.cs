@@ -10,40 +10,40 @@ namespace SEP3.DbModel
     public class DbITProvider
     {
         [Key]
-        public string username { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public double review { get; set; }
-        public int noOfReviews { get; set; }
-        public string type { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public double Review { get; set; }
+        public int NoOfReviews { get; set; }
+        public string Type { get; set; }
 
-        public List<DbTechnologies> toDbITProvider(ITProvider p, string username)
+        public List<DbTechnologies> toDbITProvider(ITProvider p)
         {
-            this.username = username;
-            this.name = p.name;
-            this.description = p.description;
-            this.review = p.review;
-            this.noOfReviews = p.noOfReviews;
-            this.type = p.type;
+            this.Username = p.Username;
+            this.Name = p.Name;
+            this.Description = p.Description;
+            this.Review = p.Review;
+            this.NoOfReviews = p.NoOfReviews;
+            this.Type = p.Type;
 
             List<DbTechnologies> techs = new List<DbTechnologies>();
-            for(int i = 0; i < p.technologies.Count; ++i)
+            for(int i = 0; i < p.Technologies.Count; ++i)
             {
                 DbTechnologies t = new DbTechnologies();
-                t.toDbTechnology(username, p.technologies.ElementAt(i));
+                t.toDbTechnology(Username, p.Technologies.ElementAt(i));
                 techs.Add(t);
             }
             return techs;
         }
 
-        public IUser toUser(DbContactInfo ci, List<DbTechnologies> techs)
+        public ITProvider toITProvider(DbContactInfo ci, List<DbTechnologies> techs)
         {
             List<string> technologies = new List<string>();
             foreach(DbTechnologies t in techs)
             {
-                technologies.Add(t.technology);
+                technologies.Add(t.Technology);
             }
-            return new ITProvider(name, description, review, noOfReviews, technologies, type, ci.toContactInfo());
+            return new ITProvider(Username, Name, Description, Review, NoOfReviews, technologies, Type, ci.toContactInfo());
         }
     }
 }

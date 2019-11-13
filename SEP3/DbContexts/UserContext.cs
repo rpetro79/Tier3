@@ -15,8 +15,9 @@ namespace SEP3.DbContexts
 
         public DbSet<DbTechnologies> technologies { get; set; }
         public DbSet<DbContactInfo> contactInfo { get; set; }
-        public DbSet<DbCredentials> credentials { get; set; }
         public DbSet<DbITProvider> ITProviders { get; set; }
         public DbSet<DbCustomer> customers { get; set; }
+        public DbSet<SEP3.DbModel.DbCustomerCredentials> customerCredentials { get; set; }
+        public DbSet<SEP3.DbModel.DbITProviderCredentials> ITProviderCredentials { get; set; }
     }
 }

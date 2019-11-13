@@ -10,20 +10,20 @@ namespace SEP3.DbModel
     public class DbCustomer
     {
         [Key]
-        public string username { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
-        public void toDbCustomer(Customer c, string username)
+        public void toDbCustomer(Customer c)
         {
-            this.username = username;
-            this.name = c.name;
-            this.description = c.description;
+            this.Username = c.Username;
+            this.Name = c.Name;
+            this.Description = c.Description;
         }
 
-        public IUser toUser(DbContactInfo ci)
+        public Customer toCustomer(DbContactInfo ci)
         {
-            return new Customer(name, description, ci.toContactInfo());
+            return new Customer(Username, Name, Description, ci.toContactInfo());
         }
     }
 }

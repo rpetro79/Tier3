@@ -7,22 +7,21 @@ using SEP3.DbModel;
 namespace SEP3.Model
 {
     [Serializable]
-    public class Customer : IUser
+    public class Customer
     {
-        public string name { get; set; }
-        public string description { get; set; }
-        public ContactInfo contactInfo { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public ContactInfo ContactInfo { get; set; }
 
-        public Customer(string name, string description, ContactInfo contactInfo)
-        {
-            this.name = name;
-            this.description = description;
-            this.contactInfo = contactInfo;
-        }
+        public Customer() { }
 
-        public ContactInfo getContactInfo()
+        public Customer(string username, string name, string description, ContactInfo contactInfo)
         {
-            return contactInfo;
+            this.Username = username;
+            this.Name = name;
+            this.Description = description;
+            this.ContactInfo = contactInfo;
         }
     }
 }

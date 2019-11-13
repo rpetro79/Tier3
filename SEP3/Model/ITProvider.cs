@@ -7,77 +7,80 @@ using SEP3.DbModel;
 namespace SEP3.Model
 {
     [Serializable]
-    public class ITProvider : IUser
+    public class ITProvider
     {
-        public string name { get; set; }
-        public string description { get; set; }
-        public double review { get; set; }
-        public int noOfReviews;
-        public List<string> technologies { get; set; }
-        public string type { get; set; }
-        public ContactInfo contactInfo { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public double Review { get; set; }
+        public int NoOfReviews { get; set; }
+        public List<string> Technologies { get; set; }
+        public string Type { get; set; }
+        public ContactInfo ContactInfo { get; set; }
 
-        public ITProvider(string name, string description, List<string> techs, string type, ContactInfo contactInfo)
+        public ITProvider()
         {
-            this.name = name;
-            this.description = description;
-            technologies = new List<string>();
-            foreach (string t in techs)
-            {
-                this.technologies.Add(t);
-            }
-            this.contactInfo = contactInfo;
-            review = 0;
-            noOfReviews = 0;
-            this.type = type;
+
         }
 
-        public ITProvider(string name, string description, double review, int noOfReviews, List<string> techs, string type, ContactInfo contactInfo)
+        public ITProvider(string username, string name, string description, List<string> techs, string type, ContactInfo contactInfo)
         {
-            this.name = name;
-            this.description = description;
-            technologies = new List<string>();
+            this.Username = username;
+            this.Name = name;
+            this.Description = description;
+            Technologies = new List<string>();
+            foreach (string t in techs)
+            {
+                this.Technologies.Add(t);
+            }
+            this.ContactInfo = contactInfo;
+            Review = 0;
+            NoOfReviews = 0;
+            this.Type = type;
+        }
+
+        public ITProvider(string username, string name, string description, double review, int noOfReviews, List<string> techs, string type, ContactInfo contactInfo)
+        {
+            this.Username = username;
+            this.Name = name;
+            this.Description = description;
+            Technologies = new List<string>();
 
             foreach (string t in techs)
             {
-                this.technologies.Add(t);
+                this.Technologies.Add(t);
             }
 
-            this.contactInfo = contactInfo;
-            this.review = review;
-            this.noOfReviews = noOfReviews;
-            this.type = type;
-        }
-
-        public ContactInfo getContactInfo()
-        {
-            return contactInfo;
+            this.ContactInfo = contactInfo;
+            this.Review = review;
+            this.NoOfReviews = noOfReviews;
+            this.Type = type;
         }
 
         public void addTechnology(string technology)
         {
-            technologies.Add(technology);
+            Technologies.Add(technology);
         }
 
         public void removeTechnology(string technology)
         {
-            technologies.Remove(technology);
+            Technologies.Remove(technology);
         }
 
         public void replaceTechnologies(List<string> techs)
         {
-            technologies = techs;
+            Technologies = techs;
         }
 
         public void reviewReceived(int newReview)
         {
-            if (noOfReviews == 0)
-                review = newReview;
+            if (NoOfReviews == 0)
+                Review = newReview;
             else
             {
-                review = (review * noOfReviews + newReview) / (noOfReviews+1);
+                Review = (Review * NoOfReviews + newReview) / (NoOfReviews+1);
             }
-            noOfReviews++;                
+            NoOfReviews++;                
         }
     }
 }
