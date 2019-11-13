@@ -13,46 +13,54 @@ namespace SEP3.DbSeeder
         public static void init(UserContext context)
         {
             //context.Database.EnsureCreated();
-            List<string> techs = new List<string>();
+            /*List<string> techs = new List<string>();
             techs.Add("Java");
             techs.Add("C#");
             techs.Add("C++");
             techs.Add("Web Design");
             techs.Add("Mobile apps");
-            Credentials user = new Credentials("ralu79", "147258", new ITProvider("Raluca-Elena Petrovici", "Find a flaw. I dare you.", 5, 10, techs, "individual",
+            ITProviderCredentials user = new ITProviderCredentials("147258", new ITProvider("ralu79", "Raluca-Elena Petrovici", "Find a flaw. I dare you.", 5, 10, techs, "individual",
                 new ContactInfo("Kollegievaenget 5", "12345678", "279998@via.dk")));
             techs.RemoveAt(4);
-            Credentials user2 = new Credentials("leksi12", "258147", new ITProvider("Aleksandra Angelova Aleksandrova", "Everything is better with Christmas decorations!!",
+            ITProviderCredentials user2 = new ITProviderCredentials("258147", new ITProvider("leksi12", "Aleksandra Angelova Aleksandrova", "Everything is better with Christmas decorations!!",
                 5, 10, techs, "individual", new ContactInfo("Mollersgade 12", "12345678", "280015@via.dk")));
-            Credentials user3 = new Credentials("karla7", "987654", new ITProvider("Karla Jajic", "Got my facts on point.",
+            ITProviderCredentials user3 = new ITProviderCredentials("987654", new ITProvider("karla7", "Karla Jajic", "Got my facts on point.",
                 5, 10, techs, "individual", new ContactInfo("Amaliegade 8", "12345678", "280066@via.dk")));
-            Credentials user4 = new Credentials("lenaB", "321654", new ITProvider("Lena Bojanowska", "A little party never killed anyone.",
+            ITProviderCredentials user4 = new ITProviderCredentials("321654", new ITProvider("lenaB", "Lena Bojanowska", "A little party never killed anyone.",
                 5, 10, techs, "individual", new ContactInfo("Hybenvej 10", "12345678", "280069@via.dk")));
 
-/*
-            DbCredentials cr = new DbCredentials();
-            DbCredentials cr2 = new DbCredentials();
-            DbCredentials cr3 = new DbCredentials();
-            DbCredentials cr4 = new DbCredentials();
-            cr.toDbCredentials(user);
-            cr2.toDbCredentials(user2);
-            cr3.toDbCredentials(user3);
-            cr4.toDbCredentials(user4);
+            DbITProvider dbProvider = context.ITProviders.Find(user.provider.username);
+            context.ITProviders.Remove(dbProvider);
+            DbITProvider dbProvider4 = context.ITProviders.Find(user4.provider.username);
+            context.ITProviders.Remove(dbProvider4);
+            DbITProvider dbProvider2 = context.ITProviders.Find(user2.provider.username);
+            context.ITProviders.Remove(dbProvider2);
+            DbITProvider dbProvider3 = context.ITProviders.Find(user3.provider.username);
+            context.ITProviders.Remove(dbProvider3);
+            context.SaveChanges();
 
-            context.credentials.Add(cr);
-            context.credentials.Add(cr2);
-            context.credentials.Add(cr3);
-            context.credentials.Add(cr4);
-            context.SaveChanges();*/
+            DbITProviderCredentials cr = new DbITProviderCredentials();
+            DbITProviderCredentials cr2 = new DbITProviderCredentials();
+            DbITProviderCredentials cr3 = new DbITProviderCredentials();
+            DbITProviderCredentials cr4 = new DbITProviderCredentials();
+            cr.toDbITProviderCredentials(user);
+            cr2.toDbITProviderCredentials(user2);
+            cr3.toDbITProviderCredentials(user3);
+            cr4.toDbITProviderCredentials(user4);
+
+            context.ITProviderCredentials.Add(cr);
+            context.ITProviderCredentials.Add(cr2);
+            context.ITProviderCredentials.Add(cr4);
+            context.SaveChanges();
 
             DbITProvider p = new DbITProvider();
             DbITProvider p2 = new DbITProvider();
             DbITProvider p3 = new DbITProvider();
             DbITProvider p4 = new DbITProvider();
-            p.toDbITProvider((ITProvider)user.user, user.username);
-            p2.toDbITProvider((ITProvider)user2.user, user2.username);
-            p3.toDbITProvider((ITProvider)user3.user, user3.username);
-            p4.toDbITProvider((ITProvider)user4.user, user4.username);
+            p.toDbITProvider(user.provider);
+            p2.toDbITProvider(user2.provider);
+            p3.toDbITProvider(user3.provider);
+            p4.toDbITProvider(user4.provider);
 
             context.ITProviders.Add(p);
             context.ITProviders.Add(p2);
@@ -60,52 +68,80 @@ namespace SEP3.DbSeeder
             context.ITProviders.Add(p4);
             context.SaveChanges();
 
-           /* DbContactInfo ci = new DbContactInfo();
+            DbContactInfo ci = new DbContactInfo();
             DbContactInfo ci2 = new DbContactInfo();
             DbContactInfo ci3 = new DbContactInfo();
             DbContactInfo ci4 = new DbContactInfo();
-            ci.toDbContactInfo(user.user.getContactInfo(), user.username);
-            ci2.toDbContactInfo(user2.user.getContactInfo(), user2.username);
-            ci3.toDbContactInfo(user3.user.getContactInfo(), user3.username);
-            ci4.toDbContactInfo(user4.user.getContactInfo(), user4.username);
+            ci.toDbContactInfo(user.provider.getContactInfo(), user.provider.username);
+            ci2.toDbContactInfo(user2.provider.getContactInfo(), user2.provider.username);
+            ci3.toDbContactInfo(user3.provider.getContactInfo(), user3.provider.username);
+            ci4.toDbContactInfo(user4.provider.getContactInfo(), user4.provider.username);
 
             context.contactInfo.Add(ci);
             context.contactInfo.Add(ci2);
             context.contactInfo.Add(ci3);
             context.contactInfo.Add(ci4);
-            context.SaveChanges();*/
+            context.SaveChanges();
 
-           /* foreach (string s in ((ITProvider)user.user).technologies)
+            foreach (string s in (user.provider).technologies)
             {
                 DbTechnologies t = new DbTechnologies();
-                t.toDbTechnology(user.username, s);
+                t.toDbTechnology(user.provider.username, s);
                 context.technologies.Add(t);
                 context.SaveChanges();
             }
 
-            foreach (string s in ((ITProvider)user2.user).technologies)
+            foreach (string s in (user2.provider).technologies)
             {
                 DbTechnologies t = new DbTechnologies();
-                t.toDbTechnology(user2.username, s);
+                t.toDbTechnology(user2.provider.username, s);
                 context.technologies.Add(t);
                 context.SaveChanges();
             }
 
-            foreach (string s in ((ITProvider)user3.user).technologies)
+            foreach (string s in (user3.provider).technologies)
             {
                 DbTechnologies t = new DbTechnologies();
-                t.toDbTechnology(user3.username, s);
+                t.toDbTechnology(user3.provider.username, s);
                 context.technologies.Add(t);
                 context.SaveChanges();
             }
 
-            foreach (string s in ((ITProvider)user4.user).technologies)
+            foreach (string s in (user4.provider).technologies)
             {
                 DbTechnologies t = new DbTechnologies();
-                t.toDbTechnology(user4.username, s);
+                t.toDbTechnology(user4.provider.username, s);
                 context.technologies.Add(t);
                 context.SaveChanges();
             }*/
+
+            CustomerCredentials c1 = new CustomerCredentials("kiril", new Customer("kiril21", "Kiril Iliev", "Rakiaaa", new ContactInfo("Amaliegade 20", "74684166", "kiril@lala.com")));
+            CustomerCredentials c2 = new CustomerCredentials("zoly", new Customer("zolyphoto", "Zoltan Vegh", "English motherfucker, do you speak it?", new ContactInfo("Kollegievaenget 2", "77788899", "zolly@lala.com")));
+            CustomerCredentials c3 = new CustomerCredentials("harry", new Customer("justHarry", "Just Harry", "I like tea", new ContactInfo("Chr M Ostergaards Vej 5", "75723641", "harryl@lala.com")));
+            CustomerCredentials c4 = new CustomerCredentials("dovydas", new Customer("dovydass", "Dovydas", "Present", new ContactInfo("Kollegievaenget 10", "94758933", "dovy@lala.com")));
+
+            List<CustomerCredentials> list = new List<CustomerCredentials>();
+            list.Add(c1);
+            list.Add(c2);
+            list.Add(c3);
+            list.Add(c4);
+            
+            foreach(CustomerCredentials c in list)
+            {
+                DbCustomerCredentials credentials = new DbCustomerCredentials();
+                credentials.toDbCustomerCredentials(c);
+
+                DbCustomer customer = new DbCustomer();
+                customer.toDbCustomer(c.Customer);
+
+                DbContactInfo ci = new DbContactInfo();
+                ci.toDbContactInfo(c.Customer.ContactInfo, c.Customer.Username);
+
+                context.customerCredentials.Add(credentials);
+                context.customers.Add(customer);
+                context.contactInfo.Add(ci);
+            }
+            context.SaveChanges();
         }
     }
 }

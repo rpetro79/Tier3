@@ -10,15 +10,20 @@ namespace SEP3.Model
     [Serializable]
     public class ContactInfo
     {
-        public string address { get; set; }
-        public string phoneNo { get; set; }
-        public string email { get; set; }
+        public string Address { get; set; }
+        public string PhoneNo { get; set; }
+        public string Email { get; set; }
+
+        public ContactInfo()
+        {
+
+        }
 
         public ContactInfo(string address, string phoneNo, string email)
         {
-            this.address = address;
-            this.phoneNo = phoneNo;
-            this.email = email;
+            this.Address = address;
+            this.PhoneNo = phoneNo;
+            this.Email = email;
         }
 
     }

@@ -9,14 +9,14 @@ namespace SEP3.DbModel
     public class DbTechnologies
     {
         [Key]
-        public int id { get; set; }
-        public string username { get; set; }
-        public string technology { get; set; }
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Technology { get; set; }
 
         public void toDbTechnology(string username, string tech)
         {
-            this.username = username;
-            this.technology = tech;
+            this.Username = username;
+            this.Technology = tech;
         }
     }
 }

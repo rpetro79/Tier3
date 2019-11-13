@@ -10,22 +10,22 @@ namespace SEP3.DbModel
     public class DbContactInfo
     {
         [Key]
-        public string username { get; set; }
-        public string address { get; set; }
-        public string phoneNo { get; set; }
-        public string email { get; set; }
+        public string Username { get; set; }
+        public string Address { get; set; }
+        public string PhoneNo { get; set; }
+        public string Email { get; set; }
 
         public void toDbContactInfo(ContactInfo ci, string username)
         {
-            this.username = username;
-            this.address = ci.address;
-            this.phoneNo = ci.phoneNo;
-            this.email = ci.email;
+            this.Username = username;
+            this.Address = ci.Address;
+            this.PhoneNo = ci.PhoneNo;
+            this.Email = ci.Email;
         }
 
         public ContactInfo toContactInfo()
         {
-            return new ContactInfo(address, phoneNo, email);
+            return new ContactInfo(Address, PhoneNo, Email);
         }
     }
 }

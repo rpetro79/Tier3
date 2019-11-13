@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEP3.DbContexts;
 
 namespace SEP3.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20191112191158_mig")]
+    partial class mig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,104 +22,104 @@ namespace SEP3.Migrations
 
             modelBuilder.Entity("SEP3.DbModel.DbContactInfo", b =>
                 {
-                    b.Property<string>("Username")
+                    b.Property<string>("username")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Address")
+                    b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNo")
+                    b.Property<string>("phoneNo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Username");
+                    b.HasKey("username");
 
                     b.ToTable("contactInfo");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbCustomer", b =>
                 {
-                    b.Property<string>("Username")
+                    b.Property<string>("username")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Username");
+                    b.HasKey("username");
 
                     b.ToTable("customers");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbCustomerCredentials", b =>
                 {
-                    b.Property<string>("Username")
+                    b.Property<string>("username")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Username");
+                    b.HasKey("username");
 
                     b.ToTable("customerCredentials");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbITProvider", b =>
                 {
-                    b.Property<string>("Username")
+                    b.Property<string>("username")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NoOfReviews")
+                    b.Property<int>("noOfReviews")
                         .HasColumnType("int");
 
-                    b.Property<double>("Review")
+                    b.Property<double>("review")
                         .HasColumnType("float");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Username");
+                    b.HasKey("username");
 
                     b.ToTable("ITProviders");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbITProviderCredentials", b =>
                 {
-                    b.Property<string>("Username")
+                    b.Property<string>("username")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Username");
+                    b.HasKey("username");
 
                     b.ToTable("ITProviderCredentials");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbTechnologies", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Technology")
+                    b.Property<string>("technology")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("technologies");
                 });
