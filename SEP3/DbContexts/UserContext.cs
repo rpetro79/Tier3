@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SEP3.DbModel;
+using SEP3.Model;
 
 namespace SEP3.DbContexts
 {
@@ -17,7 +18,10 @@ namespace SEP3.DbContexts
         public DbSet<DbContactInfo> contactInfo { get; set; }
         public DbSet<DbITProvider> ITProviders { get; set; }
         public DbSet<DbCustomer> customers { get; set; }
-        public DbSet<SEP3.DbModel.DbCustomerCredentials> customerCredentials { get; set; }
-        public DbSet<SEP3.DbModel.DbITProviderCredentials> ITProviderCredentials { get; set; }
+        public DbSet<DbCredentials> credentials { get; set; }
+        public DbSet<DbProjectManagement> ProjectManagement { get; set; }
+        public DbSet<DbITProvidersAssigned> ITProvidersAssigned { get; set; }
+        public DbSet<DbApplication> Applications { get; set; }
+        public DbSet<DbProject> Projects { get;set; }
     }
 }
