@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SEP3.DbContexts;
 using SEP3.DbModel;
 using SEP3.Model;
+using SEP3.DbManagement;
 
 namespace SEP3.Controllers
 {
@@ -24,104 +25,34 @@ namespace SEP3.Controllers
 
         // GET: api/DbITProviderCredentials
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ITProviderCredentials>>> GetDbITProviderCredentials()
+        public async Task<IEnumerable<ITProviderCredentials>> GetDbITProviderCredentials()
         {
-            List<ITProviderCredentials> users = new List<ITProviderCredentials>();
-            List<DbITProviderCredentials> credentials =  await _context.ITProviderCredentials.ToListAsync();
-            foreach (DbITProviderCredentials credential in credentials)
-            {
-                users.Add(toUser(credential));
-            }
-            return users;
-        }
-
-        private ITProviderCredentials toUser(DbITProviderCredentials credential)
-        {
-            DbITProvider dbProvider = _context.ITProviders.Single(prov => prov.Username == credential.Username);
-            if (dbProvider == null)
-                return null;
-            DbContactInfo contactInfo = _context.contactInfo.Single(contactInfo => contactInfo.Username == credential.Username);
-            ITProvider provider;
-            List<DbTechnologies> technologies = new List<DbTechnologies>();
-            technologies = _context.technologies.Where(technology => technology.Username == credential.Username).ToList<DbTechnologies>();
-            provider = dbProvider.toITProvider(contactInfo, technologies);
-            
-            ITProviderCredentials pc = new ITProviderCredentials(credential.Password, provider);
-            return pc;
+            return await ITProviderDb.GetITProviderCredentialsAsync(_context);
         }
 
         // GET: api/DbITProviderCredentials/5
         [HttpGet("{username}")]
         public async Task<ActionResult<ITProviderCredentials>> GetDbITProviderCredentials(string username)
         {
-            var dbITProviderCredentials = await _context.ITProviderCredentials.FindAsync(username);
-
-            if (dbITProviderCredentials == null)
-            {
-                return NotFound();
-            }
-            ITProviderCredentials credentials;
-            DbITProvider dbProvider = _context.ITProviders.Find(username);
-            DbContactInfo dbCi = _context.contactInfo.Find(username);
-            List<DbTechnologies> techs = _context.technologies.Where(tec => tec.Username == username).ToList<DbTechnologies>();
-            credentials = dbITProviderCredentials.toITProviderCredentials(dbProvider.toITProvider(dbCi, techs));
-            return credentials;
+            return await ITProviderDb.GetITProviderCredentialsAsync(username, _context);
         }
 
         // PUT: api/DbITProviderCredentials/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{username}")]
-        public async Task<IActionResult> PutDbITProviderCredentials(string username, ITProviderCredentials credentials)
+        [HttpPut]
+        public async Task<IActionResult> PutDbITProviderCredentials(ITProviderCredentials credentials)
         {
-            if (username != credentials.Provider.Username)
+            bool x = await ITProviderDb.putITProviderCredentialsAsync(credentials, _context);
+
+            if(x)
             {
-                return BadRequest();
+                return Accepted();
             }
-            DbITProviderCredentials dbCredentials = new DbITProviderCredentials();
-            dbCredentials.toDbITProviderCredentials(credentials);
-
-            DbITProvider provider = new DbITProvider();
-            List<DbTechnologies> techs = provider.toDbITProvider(credentials.Provider);
-
-            DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(credentials.Provider.ContactInfo, credentials.Provider.Username);
-
-            List<DbTechnologies> toDeleteTechs = _context.technologies.Where(tec => tec.Username == username).ToList<DbTechnologies>();
-            foreach(DbTechnologies t in toDeleteTechs)
+            else
             {
-                _context.technologies.Remove(t);
+                return NotFound();
             }
-            await _context.SaveChangesAsync();
-
-            foreach(DbTechnologies t in techs)
-            {
-                _context.technologies.Add(t);
-            }
-
-
-
-            _context.Entry(dbCredentials).State = EntityState.Modified;
-            _context.Entry(provider).State = EntityState.Modified;
-            _context.Entry(ci).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DbITProviderCredentialsExists(username))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/DbITProviderCredentials
@@ -130,72 +61,23 @@ namespace SEP3.Controllers
         [HttpPost]
         public async Task<ActionResult<DbITProviderCredentials>> PostDbITProviderCredentials(ITProviderCredentials credentials)
         {
-            DbITProviderCredentials dbCredentials = new DbITProviderCredentials();
-            dbCredentials.toDbITProviderCredentials(credentials);
-            _context.ITProviderCredentials.Add(dbCredentials);
-
-            DbITProvider provider = new DbITProvider();
-            List<DbTechnologies> techs = provider.toDbITProvider(credentials.Provider);
-            _context.ITProviders.Add(provider);
-            foreach(DbTechnologies tec in techs)
+            bool x = await ITProviderDb.postITProviderCredentialsAsync(credentials, _context);
+            if (x)
             {
-                _context.technologies.Add(tec);
+                return Accepted();
             }
-
-            DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(credentials.Provider.ContactInfo, credentials.Provider.Username);
-            _context.contactInfo.Add(ci);
-
-            try
+            else
             {
-                await _context.SaveChangesAsync();
+                return Conflict();
             }
-            catch (DbUpdateException)
-            {
-                if (DbITProviderCredentialsExists(credentials.Provider.Username))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetDbITProviderCredentials", new { id = credentials.Provider.Username }, credentials);
         }
 
         // DELETE: api/DbITProviderCredentials/5
         [HttpDelete("{username}")]
         public async Task<ActionResult<DbITProviderCredentials>> DeleteDbITProviderCredentials(string username)
         {
-            var dbITProviderCredentials = await _context.ITProviderCredentials.FindAsync(username);
-            if (dbITProviderCredentials == null)
-            {
-                return NotFound();
-            }
-
-            DbContactInfo ci = _context.contactInfo.Find(username);
-            _context.contactInfo.Remove(ci);
-
-            List<DbTechnologies> techs = _context.technologies.Where(tec => tec.Username == username).ToList<DbTechnologies>();
-            foreach(DbTechnologies tec in techs)
-            {
-                _context.technologies.Remove(tec);
-            }
-
-            DbITProvider prov = _context.ITProviders.Find(username);
-            _context.ITProviders.Remove(prov);
-
-            _context.ITProviderCredentials.Remove(dbITProviderCredentials);
-            await _context.SaveChangesAsync();
-
-            return dbITProviderCredentials;
-        }
-
-        private bool DbITProviderCredentialsExists(string id)
-        {
-            return _context.ITProviderCredentials.Any(e => e.Username == id);
+            await ITProviderDb.deleteCredentialsAsync(username, _context);
+            return Ok();
         }
     }
 }

@@ -12,8 +12,9 @@ namespace SEP3.DbSeeder
     {
         public static void init(UserContext context)
         {
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
+            context.SaveChanges();
             //List<string> techs = new List<string>();
             //techs.Add("Java");
             //techs.Add("C#");
@@ -144,6 +145,16 @@ namespace SEP3.DbSeeder
             //    context.contactInfo.Add(ci);
             //}
             //context.SaveChanges();
+
+            /*            Project project = new Project(c1.Customer.Username + 1, c1.Customer, "McDonalds App", "I want an app like McDonalds", "windows application");
+                        Project project2 = new Project(c2.Customer.Username + 1, c2.Customer, "Database management", "I want an app to manage my database easy", "windows application");
+                        DbProject pr = new DbProject();
+                        DbProject pr2 = new DbProject();
+                        pr.toDbProject(project);
+                        pr2.toDbProject(project2);
+                        context.Projects.Add(pr);
+                        context.Projects.Add(pr2);
+                        context.SaveChanges();*/
         }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEP3.DbContexts;
 
 namespace SEP3.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20191117164641_Projects_Included")]
+    partial class Projects_Included
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,19 +38,6 @@ namespace SEP3.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("contactInfo");
-                });
-
-            modelBuilder.Entity("SEP3.DbModel.DbCredentials", b =>
-                {
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Username");
-
-                    b.ToTable("credentials");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbCustomer", b =>
@@ -136,28 +125,6 @@ namespace SEP3.Migrations
                     b.ToTable("ITProvidersAssigned");
                 });
 
-            modelBuilder.Entity("SEP3.DbModel.DbProject", b =>
-                {
-                    b.Property<string>("ProjectId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("customerUsername")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ProjectId");
-
-                    b.ToTable("Projects");
-                });
-
             modelBuilder.Entity("SEP3.DbModel.DbProjectManagement", b =>
                 {
                     b.Property<string>("ProjectId")
@@ -211,6 +178,31 @@ namespace SEP3.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Applications");
+                });
+
+            modelBuilder.Entity("SEP3.Model.Project", b =>
+                {
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerUsername")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProjectId");
+
+                    b.ToTable("Projects");
                 });
 #pragma warning restore 612, 618
         }

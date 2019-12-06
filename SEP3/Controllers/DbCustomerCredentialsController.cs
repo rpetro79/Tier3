@@ -8,10 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using SEP3.DbContexts;
 using SEP3.DbModel;
 using SEP3.Model;
+using SEP3.DbManagement;
 
 namespace SEP3.Controllers
 {
-    [Route("api/customerCredentials")]
+    [Route("api/CustomerCredentials")]
     [ApiController]
     public class DbCustomerCredentialsController : ControllerBase
     {
@@ -24,77 +25,35 @@ namespace SEP3.Controllers
 
         // GET: api/DbCustomerCredentials
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerCredentials>>> GetDbCustomerCredentials()
+        public async Task<IEnumerable<CustomerCredentials>> GetDbCustomerCredentials()
         {
-            List<CustomerCredentials> users = new List<CustomerCredentials>();
-            List<DbCustomerCredentials> credentials = await _context.customerCredentials.ToListAsync();
-            foreach (DbCustomerCredentials credential in credentials)
-            {
-                users.Add(toUser(credential));
-            }
-            return users;
-        }
-
-        private CustomerCredentials toUser(DbCustomerCredentials credential)
-        {
-            DbCustomer customer = _context.customers.Single(customer => customer.Username == credential.Username);
-            if (customer == null)
-                return null;
-            DbContactInfo contactInfo = _context.contactInfo.Single(contactInfo => contactInfo.Username == credential.Username);
-            Customer cust;
-            cust = customer.toCustomer(contactInfo);
-            CustomerCredentials cc = new CustomerCredentials(credential.Password, cust);
-            return cc;
+            return await CustomerDb.getCustomerCredentialsAsync(_context);
         }
 
         // GET: api/DbCustomerCredentials/5
         [HttpGet("{username}")]
         public async Task<ActionResult<CustomerCredentials>> GetDbCustomerCredentials(string username)
         {
-            DbCustomerCredentials dbCustomerCredentials = await _context.customerCredentials.FindAsync(username);
-            CustomerCredentials user = toUser(dbCustomerCredentials);
-
-            if (dbCustomerCredentials == null)
+            var cust = await CustomerDb.getCustomerCredentialsAsync(username, _context);
+            if (cust == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return cust;
         }
 
         // PUT: api/DbCustomerCredentials/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{username}")]
-        public async Task<IActionResult> PutDbCustomerCredentials(string username, CustomerCredentials credentials)
+        [HttpPut]
+        public async Task<IActionResult> PutDbCustomerCredentials(CustomerCredentials credentials)
         {
-            if (username != credentials.Customer.Username)
-            {
-                return BadRequest();
-            }
 
-            DbCustomer customer = new DbCustomer();
-            customer.toDbCustomer((Customer)credentials.Customer);
-            _context.Entry(customer).State = EntityState.Modified;
-            
-             DbContactInfo ci = new DbContactInfo();
-             ci.toDbContactInfo(credentials.Customer.ContactInfo, username);
-            _context.Entry(ci).State = EntityState.Modified;
-
-            DbCustomerCredentials dbCustomerCredentials = new DbCustomerCredentials();
-            dbCustomerCredentials.toDbCustomerCredentials(credentials);
-            _context.Entry(dbCustomerCredentials).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                
-            }
-
-            return NoContent();
+            bool x = await CustomerDb.putCustomerCredentialsAsync(credentials, _context);
+            if (x)
+                return Accepted();
+            else return NotFound();
         }
 
         // POST: api/DbCustomerCredentials
@@ -103,62 +62,22 @@ namespace SEP3.Controllers
         [HttpPost]
         public async Task<ActionResult<DbCustomerCredentials>> PostDbCustomerCredentials(CustomerCredentials credentials)
         {
-            DbCustomerCredentials dbCustomerCredentials = new DbCustomerCredentials();
-            dbCustomerCredentials.toDbCustomerCredentials(credentials);
-            _context.customerCredentials.Add(dbCustomerCredentials);
-            
-            DbCustomer cust = new DbCustomer();
-            cust.toDbCustomer((Customer)credentials.Customer);
-            _context.customers.Add(cust);
-            
-            DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(credentials.Customer.ContactInfo, credentials.Customer.Username);
-            _context.contactInfo.Add(ci);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (DbCustomerCredentialsExists(dbCustomerCredentials.Username))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var i = await CustomerDb.postCustomerCredentialsAsync(credentials, _context);
 
-            return CreatedAtAction("GetDbCustomerCredentials", new { id = credentials.Customer.Username }, credentials);
-            //hi
+            if (!i)
+                return Conflict();
+            else 
+                return CreatedAtAction("GetDbCustomerCredentials", new { id = credentials.Customer.Username }, credentials);
         }
 
         // DELETE: api/DbCustomerCredentials/5
         [HttpDelete("{username}")]
-        public async Task<ActionResult<DbCustomerCredentials>> DeleteDbCustomerCredentials(string username)
+        public async Task<ActionResult> DeleteDbCustomerCredentials(string username)
         {
-            var dbCustomerCredentials = await _context.customerCredentials.FindAsync(username);
-            if (dbCustomerCredentials == null)
-            {
-                return NotFound();
-            }
-
-            DbCustomer cust = await _context.customers.FindAsync(username);
-            _context.customers.Remove(cust);
-
-            DbContactInfo ci = await _context.contactInfo.FindAsync(username);
-            _context.contactInfo.Remove(ci);
-
-            _context.customerCredentials.Remove(dbCustomerCredentials);
-            await _context.SaveChangesAsync();
-
-            return dbCustomerCredentials;
+            await CustomerDb.deleteAsync(username, _context);
+            return Ok();
         }
 
-        private bool DbCustomerCredentialsExists(string id)
-        {
-            return _context.customerCredentials.Any(e => e.Username == id);
-        }
+        
     }
 }
