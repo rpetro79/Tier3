@@ -14,10 +14,9 @@ namespace SEP3.DbManagement
     {
         private async static Task<ITProvider> toITProviderAsync(DbITProvider provider, UserContext _context)
         {
-            DbContactInfo contactInfo = await _context.contactInfo.SingleAsync(contactInfo => contactInfo.Username == provider.Username);
+            ContactInfo contactInfo = await ContactInfoDb.getContactInfoAsync(provider.Username, _context);
 
-            List<DbTechnologies> technologies = new List<DbTechnologies>();
-            technologies = _context.technologies.Where(technology => technology.Username == provider.Username).ToList<DbTechnologies>();
+            List<string> technologies = TechnologiesDb.getTechnologiesOfProvider(provider.Username, _context);
 
             ITProvider pr = provider.toITProvider(contactInfo, technologies);
 
@@ -49,23 +48,15 @@ namespace SEP3.DbManagement
             DbITProvider dbProvider = new DbITProvider();
             List<DbTechnologies> techs = dbProvider.toDbITProvider(provider);
 
-            DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(provider.ContactInfo, provider.Username);
+            bool x = await ContactInfoDb.putContactInfoAsync(provider.ContactInfo, provider.Username, _context);
+            if (x == false)
+                return false;
 
-            List<DbTechnologies> toDeleteTechs = _context.technologies.Where(tec => tec.Username == provider.Username).ToList<DbTechnologies>();
-            foreach (DbTechnologies t in toDeleteTechs)
-            {
-                _context.technologies.Remove(t);
-            }
-            await _context.SaveChangesAsync();
+            x = await TechnologiesDb.putTechnologies(techs, _context);
+            if (!x)
+                return false;
 
-            foreach (DbTechnologies t in techs)
-            {
-                _context.technologies.Add(t);
-            }
-
-            _context.Entry(provider).State = EntityState.Modified;
-            _context.Entry(ci).State = EntityState.Modified;
+            _context.Entry(dbProvider).State = EntityState.Modified;
 
             try
             {
@@ -88,18 +79,16 @@ namespace SEP3.DbManagement
             DbITProvider dbProvider = new DbITProvider();
             List<DbTechnologies> techs = dbProvider.toDbITProvider(provider);
 
-            foreach (DbTechnologies tec in techs)
-            {
-                _context.technologies.Add(tec);
-            }
+            bool x = await ContactInfoDb.postContactInfoAsync(provider.ContactInfo, provider.Username, _context);
+            if (x == false)
+                return false;
 
+            x = await TechnologiesDb.postTechnologies(techs, _context);
+            if (x == false)
+                return false;
 
             _context.ITProviders.Add(dbProvider);
 
-            DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(provider.ContactInfo, provider.Username);
-            _context.contactInfo.Add(ci);
-           
             try
             {
                  await _context.SaveChangesAsync();
@@ -114,14 +103,12 @@ namespace SEP3.DbManagement
 
         public async static Task deleteITProviderAsync(string username, UserContext _context)
         {
-            DbContactInfo ci = _context.contactInfo.Find(username);
-            _context.contactInfo.Remove(ci);
+            await ContactInfoDb.deleteContactInfoAsync(username, _context);
 
-            List<DbTechnologies> techs = _context.technologies.Where(tec => tec.Username == username).ToList<DbTechnologies>();
-            foreach (DbTechnologies tec in techs)
-            {
-                _context.technologies.Remove(tec);
-            }
+            await TechnologiesDb.deleteTechnologiesOfProvider(username, _context);
+
+            await ApplicationsDb.deleteApplicationsOfProvider(username, _context);
+            ProvidersAssignedDb.deleteProvider(username, _context);
 
             DbITProvider prov = _context.ITProviders.Find(username);
             _context.ITProviders.Remove(prov);
@@ -129,7 +116,7 @@ namespace SEP3.DbManagement
             await _context.SaveChangesAsync();
         }
 
-        public async static Task<IEnumerable<ITProviderCredentials>> GetITProviderCredentialsAsync(UserContext _context)
+        /*public async static Task<IEnumerable<ITProviderCredentials>> GetITProviderCredentialsAsync(UserContext _context)
         {
             List<ITProvider> providers = await getITProvidersAsync(_context);
             List<ITProviderCredentials> providerCredentials = new List<ITProviderCredentials>();
@@ -140,7 +127,7 @@ namespace SEP3.DbManagement
                 providerCredentials.Add(cr.toITProviderCredentials(provider));
             }
             return providerCredentials;
-        }
+        }*/
 
         public async static Task<ITProviderCredentials> GetITProviderCredentialsAsync(string username, UserContext _context)
         {
@@ -184,6 +171,10 @@ namespace SEP3.DbManagement
         {
             DbCredentials dbCredentials = new DbCredentials();
             dbCredentials.toDbITProviderCredentials(credentials);
+
+            bool x = await putITProviderAsync(credentials.Provider, _context);
+            if (x == false)
+                return false;
 
             _context.Entry(dbCredentials).State = EntityState.Modified;
 

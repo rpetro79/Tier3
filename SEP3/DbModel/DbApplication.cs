@@ -30,7 +30,7 @@ namespace SEP3.DbModel
             this.ITproviderUsername = app.Provider.Username;
             this.ApplicationText = app.ApplicationText;
             this.Date = app.Date;
-            this.Approved = Enum.GetName(typeof(ApplicationAnswer), Approved);
+            this.Approved = Enum.GetName(typeof(ApplicationAnswer), app.Answer);
         }
     }
 }

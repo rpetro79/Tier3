@@ -49,17 +49,20 @@ namespace SEP3.DbManagement
 
         public async static Task<bool> putCustomerCredentialsAsync(CustomerCredentials credentials, UserContext _context)
         {
-            DbCustomer customer = new DbCustomer();
-            customer.toDbCustomer((Customer)credentials.Customer);
-            _context.Entry(customer).State = EntityState.Modified;
+            DbCredentials cr = _context.credentials.Find(credentials.Customer.Username);
+            if (cr == null)
+                return false;
+            cr.toDbCustomerCredentials(credentials);
 
-            DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(credentials.Customer.ContactInfo, credentials.Customer.Username);
-            _context.Entry(ci).State = EntityState.Modified;
+            bool x = await putCustomerAsync(credentials.Customer, _context);
+            if (x == false)
+                return false;
 
-            DbCredentials dbCustomerCredentials = new DbCredentials();
-            dbCustomerCredentials.toDbCustomerCredentials(credentials);
-            _context.Entry(dbCustomerCredentials).State = EntityState.Modified;
+            x = await ContactInfoDb.putContactInfoAsync(credentials.Customer.ContactInfo, credentials.Customer.Username, _context);
+            if (x == false)
+                return false;
+
+            _context.Entry(cr).State = EntityState.Modified;
 
             try
             {
@@ -77,13 +80,14 @@ namespace SEP3.DbManagement
             dbCustomerCredentials.toDbCustomerCredentials(credentials);
             await _context.credentials.AddAsync(dbCustomerCredentials);
 
-            DbCustomer cust = new DbCustomer();
-            cust.toDbCustomer((Customer)credentials.Customer);
-            await _context.customers.AddAsync(cust);
+            bool x = await postCustomerAsync(credentials.Customer, _context);
+            if (x == false)
+                return false;
 
-            DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(credentials.Customer.ContactInfo, credentials.Customer.Username);
-            await _context.contactInfo.AddAsync(ci);
+            x = await ContactInfoDb.postContactInfoAsync(credentials.Customer.ContactInfo, credentials.Customer.Username, _context);
+            if (x == false)
+                return false;
+            
             try
             {
                 await _context.SaveChangesAsync();
@@ -96,7 +100,7 @@ namespace SEP3.DbManagement
             return true;
         }
 
-        public async static Task deleteAsync(string username, UserContext _context)
+        public async static Task deleteCredentialsAsync(string username, UserContext _context)
         {
             var dbCustomerCredentials = _context.credentials.Find(username);
             if (dbCustomerCredentials == null)
@@ -104,19 +108,10 @@ namespace SEP3.DbManagement
                 return;
             }
 
-            DbCustomer cust = _context.customers.Find(username);
-            _context.customers.Remove(cust);
-
-            DbContactInfo ci = _context.contactInfo.Find(username);
-            _context.contactInfo.Remove(ci);
-
+            await deleteCustomerAsync(username, _context);
+            
             _context.credentials.Remove(dbCustomerCredentials);
             await _context.SaveChangesAsync();
-        }
-
-        private static bool DbCustomerCredentialsExists(string id, UserContext _context)
-        {
-            return _context.credentials.Any(e => e.Username == id);
         }
 
         public async static Task<Customer> getCustomerAsync(string username, UserContext _context)
@@ -125,24 +120,77 @@ namespace SEP3.DbManagement
             if (customer == null)
                 return null;
 
-            return await getCustomerWithContactInfoAsync(customer, _context);
+            ContactInfo ci = await ContactInfoDb.getContactInfoAsync(username, _context);
+
+            return customer.toCustomer(ci);
         }
 
-        public async static Task<IEnumerable<Customer>> getCustomers(UserContext _context)
+        public async static Task<IEnumerable<Customer>> getCustomersAsync(UserContext _context)
         {
             List<DbCustomer> custs = await _context.customers.ToListAsync<DbCustomer>();
             List<Customer> customers = new List<Customer>();
             foreach(DbCustomer cust in custs)
             {
-                customers.Add(await getCustomerWithContactInfoAsync(cust, _context));
+                ContactInfo ci = await ContactInfoDb.getContactInfoAsync(cust.Username, _context);
+                customers.Add(cust.toCustomer(ci));
             }
             return customers;
         }
 
-        private async static Task<Customer> getCustomerWithContactInfoAsync(DbCustomer cust, UserContext _context)
+        public async static Task<bool> putCustomerAsync(Customer cust, UserContext _context)
         {
-            DbContactInfo contactInfo = await _context.contactInfo.SingleAsync(contactInfo => contactInfo.Username == cust.Username);
-            return cust.toCustomer(contactInfo);
+            var c = _context.customers.Find(cust.Username);
+            if (c == null)
+                return false;
+            c.toDbCustomer(cust);
+
+            bool x = await ContactInfoDb.putContactInfoAsync(cust.ContactInfo, cust.Username, _context);
+            if(x == false)
+            {
+                return false;
+            }
+
+            _context.Entry(c).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async static Task<bool> postCustomerAsync(Customer customer, UserContext _context)
+        {
+            if (_context.customers.Any(c => c.Username == customer.Username))
+                return false;
+            DbCustomer cust = new DbCustomer();
+            cust.toDbCustomer(customer);
+            await _context.customers.AddAsync(cust);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async static Task deleteCustomerAsync(string username, UserContext _context)
+        {
+            await ContactInfoDb.deleteContactInfoAsync(username, _context);
+            await ProjectManagementDb.deleteProjectsManagementOfUser(username, _context);
+            DbCustomer cust = _context.customers.Find(username);
+            _context.customers.Remove(cust);
+            await _context.SaveChangesAsync();
         }
     }
 }

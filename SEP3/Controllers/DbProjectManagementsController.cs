@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SEP3.DbContexts;
 using SEP3.DbModel;
+using SEP3.Model;
+using SEP3.DbManagement;
 
 namespace SEP3.Controllers
 {
@@ -22,106 +24,62 @@ namespace SEP3.Controllers
         }
 
         // GET: api/DbProjectManagements
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<DbProjectManagement>>> GetProjectManagement()
+        [HttpGet("{username}/{projectId}")]
+        public async Task<ActionResult<ProjectManagement>> GetProjectManagement(string projectId, string username)
         {
-            var projectManagementList = _context.ProjectManagement.ToListAsync();
-            var projects = _context.Projects.ToListAsync();
-            return null;
+            var projectManagement = await ProjectManagementDb.getProjectManagementAsync(projectId, _context);
+            if (projectManagement == null)
+                return NotFound();
+            return projectManagement;
         }
 
         // GET: api/DbProjectManagements/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DbProjectManagement>> GetDbProjectManagement(string id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult<List<ProjectManagement>>> GetProjectManagementOfUser(string username)
         {
-            var dbProjectManagement = await _context.ProjectManagement.FindAsync(id);
+            var projectsManagement = await ProjectManagementDb.getProjectsManagementOfUserAsync(username, _context);
 
-            if (dbProjectManagement == null)
+            if (projectsManagement == null)
             {
                 return NotFound();
             }
 
-            return dbProjectManagement;
+            return projectsManagement;
         }
 
         // PUT: api/DbProjectManagements/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDbProjectManagement(string id, DbProjectManagement dbProjectManagement)
+        [HttpPut]
+        public async Task<IActionResult> PutDbProjectManagement(ProjectManagement projectManagement)
         {
-            if (id != dbProjectManagement.ProjectId)
-            {
-                return BadRequest();
+            bool x = await ProjectManagementDb.putProjectManagementAsync(projectManagement, _context);
 
-            }
-
-            _context.Entry(dbProjectManagement).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DbProjectManagementExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            if (x == false)
+                return NotFound();
+            return Accepted();
         }
 
         // POST: api/DbProjectManagements
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<DbProjectManagement>> PostDbProjectManagement(DbProjectManagement dbProjectManagement)
+        public async Task<ActionResult<DbProjectManagement>> PostDbProjectManagement(ProjectManagement projectManagement)
         {
-            _context.ProjectManagement.Add(dbProjectManagement);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (DbProjectManagementExists(dbProjectManagement.ProjectId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            bool x = await ProjectManagementDb.postProjectManagementAsync(projectManagement, _context);
 
-            return CreatedAtAction("GetDbProjectManagement", new { id = dbProjectManagement.ProjectId }, dbProjectManagement);
+            if (x)
+                return Accepted();
+            return Conflict();
         }
 
         // DELETE: api/DbProjectManagements/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<DbProjectManagement>> DeleteDbProjectManagement(string id)
+        [HttpDelete("{projectId}")]
+        public async Task<ActionResult<DbProjectManagement>> DeleteDbProjectManagement(string projectId)
         {
-            var dbProjectManagement = await _context.ProjectManagement.FindAsync(id);
-            if (dbProjectManagement == null)
-            {
-                return NotFound();
-            }
+            await ProjectManagementDb.deleteProjectManagement(projectId, _context);
 
-            _context.ProjectManagement.Remove(dbProjectManagement);
-            await _context.SaveChangesAsync();
-
-            return dbProjectManagement;
-        }
-
-        private bool DbProjectManagementExists(string id)
-        {
-            return _context.ProjectManagement.Any(e => e.ProjectId == id);
+            return Ok();
         }
     }
 }

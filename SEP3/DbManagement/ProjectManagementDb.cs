@@ -22,29 +22,19 @@ namespace SEP3.DbManagement
 
         private async static Task<ProjectManagement> toProjectManagementAsync(DbProjectManagement projectManagement, UserContext _context)
         {
-            Task<Project> tproject = ProjectDb.getProjectAsync(projectManagement.ProjectId, _context);
-            Task<List<DbITProvidersAssigned>> tprov = _context.ITProvidersAssigned.Where(p => p.ProjectId == projectManagement.ProjectId).ToListAsync<DbITProvidersAssigned>();
+            Project project = await ProjectDb.getProjectAsync(projectManagement.ProjectId, _context);
+            
+            List<Application> apps = await ApplicationsDb.getApplicationsForProjectAsync(projectManagement.ProjectId, _context);
 
-            List<Application> apps = await ApplicationsDb.getApplicationsAsync(projectManagement.ProjectId, _context);
+            List<ITProvider> providers = await ProvidersAssignedDb.getProvidersAssigned(projectManagement.ProjectId, _context);
 
-            List<DbITProvidersAssigned> prov = await tprov;
-            List<ITProvider> providers = new List<ITProvider>();
-            if (prov != null)
-            {
-                foreach (DbITProvidersAssigned p in prov)
-                {
-                    providers.Add(await ITProviderDb.getITProviderAsync(p.ProviderUsername, _context));
-                }
-            }
-
-            Project pr = await tproject;
-            ProjectManagement pm = projectManagement.toProjectManagement(pr, apps, providers);
+            ProjectManagement pm = projectManagement.toProjectManagement(project, apps, providers);
             return pm;
         }
 
         public async static Task<List<ProjectManagement>> getProjectsManagementOfUserAsync(string username, UserContext _context)
         {
-            List<DbProjectManagement> projectManagement = await _context.ProjectManagement.Where(pm => pm.ProjectId == username).ToListAsync<DbProjectManagement>();
+            List<DbProjectManagement> projectManagement = await _context.ProjectManagement.Where(pm => pm.ProjectId.Substring(0, username.Length) == username).ToListAsync<DbProjectManagement>();
             List<ProjectManagement> pms = new List<ProjectManagement>();
             foreach(DbProjectManagement pm in projectManagement)
             {
@@ -67,6 +57,10 @@ namespace SEP3.DbManagement
             x = ApplicationsDb.putApplications(pm.Applications, _context);
             if (!x)
                 return false;
+            x = ProvidersAssignedDb.putProvidersAssigned(pm.project.ProjectId, pm.AssignedProviders, _context);
+            if (!x)
+                return false;
+
             try
             {
                 _context.SaveChanges();
@@ -89,6 +83,16 @@ namespace SEP3.DbManagement
             p = new DbProjectManagement();
             p.toDbProjectManagement(pm);
 
+           /* if(pm.Applications != null)
+            {
+                foreach(Application app in pm.Applications)
+                {
+                    x = ApplicationsDb.postApplication(app, _context);
+                    if (x == false)
+                        return false;
+                }
+            }*/
+
             _context.ProjectManagement.Add(p);
 
             try
@@ -106,12 +110,8 @@ namespace SEP3.DbManagement
         {
             var projectM = await _context.ProjectManagement.FindAsync(projectId);
             await ProjectDb.deleteProject(projectId, _context);
-            await ApplicationsDb.deleteApplications(projectId, _context);
-            var itP = await _context.ITProvidersAssigned.Where(p => p.ProjectId == projectId).ToListAsync<DbITProvidersAssigned>();
-            foreach (DbITProvidersAssigned p in itP)
-            {
-                _context.ITProvidersAssigned.Remove(p);
-            }
+            await ApplicationsDb.deleteApplicationsOnProject(projectId, _context);
+            await ProvidersAssignedDb.deleteProvidersAssignedToProject(projectId, _context);
 
             if (projectM == null)
             {
@@ -120,6 +120,16 @@ namespace SEP3.DbManagement
 
             _context.ProjectManagement.Remove(projectM);
             await _context.SaveChangesAsync();
+        }
+
+        public async static Task deleteProjectsManagementOfUser(string username, UserContext _context)
+        {
+            var projectMs = _context.ProjectManagement.Where(p => p.ProjectId.Substring(0, username.Length) == username).ToList();
+
+            foreach (DbProjectManagement pr in projectMs)
+            {
+                await deleteProjectManagement(pr.ProjectId, _context);
+            }
         }
     }
 }

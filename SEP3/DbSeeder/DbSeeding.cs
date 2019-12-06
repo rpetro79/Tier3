@@ -5,16 +5,38 @@ using System.Threading.Tasks;
 using SEP3.DbContexts;
 using SEP3.DbModel;
 using SEP3.Model;
+using SEP3.DbManagement;
 
 namespace SEP3.DbSeeder
 {
     public class DbSeeding
     {
-        public static void init(UserContext context)
+        public async static void init(UserContext context)
         {
             context.Database.EnsureCreated();
 
-            context.SaveChanges();
+            if(!context.ProjectManagement.Any())
+            {
+                List<DbProject> dbProjects = context.Projects.ToList<DbProject>();
+                Customer c;
+                DbCustomer customer;
+                ContactInfo ci;
+                DbContactInfo dbci;
+                ProjectManagement pm;
+                DbProjectManagement dbpm = new DbProjectManagement();
+                foreach (DbProject p in dbProjects)
+                {
+                    customer = await context.customers.FindAsync(p.customerUsername);
+                    dbci = await context.contactInfo.FindAsync(p.customerUsername);
+                    ci = dbci.toContactInfo();
+                    c = customer.toCustomer(ci);
+                    pm = new ProjectManagement(p.toProject(c));
+                    dbpm.toDbProjectManagement(pm);
+                    context.ProjectManagement.Add(dbpm);
+                }
+
+                context.SaveChanges();
+            }
             //List<string> techs = new List<string>();
             //techs.Add("Java");
             //techs.Add("C#");
