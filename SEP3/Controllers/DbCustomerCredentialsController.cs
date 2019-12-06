@@ -74,7 +74,7 @@ namespace SEP3.Controllers
         [HttpDelete("{username}")]
         public async Task<ActionResult> DeleteDbCustomerCredentials(string username)
         {
-            await CustomerDb.deleteAsync(username, _context);
+            await CustomerDb.deleteCredentialsAsync(username, _context);
             return Ok();
         }
 

@@ -36,14 +36,9 @@ namespace SEP3.DbModel
             return techs;
         }
 
-        public ITProvider toITProvider(DbContactInfo ci, List<DbTechnologies> techs)
+        public ITProvider toITProvider(ContactInfo ci, List<string> techs)
         {
-            List<string> technologies = new List<string>();
-            foreach(DbTechnologies t in techs)
-            {
-                technologies.Add(t.Technology);
-            }
-            return new ITProvider(Username, Name, Description, Review, NoOfReviews, technologies, Type, ci.toContactInfo());
+            return new ITProvider(Username, Name, Description, Review, NoOfReviews, techs, Type, ci);
         }
     }
 }
