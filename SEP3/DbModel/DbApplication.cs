@@ -15,13 +15,13 @@ namespace SEP3.DbModel
         public string ITproviderUsername { get; set; }
         public string ApplicationText { get; set; }
         public DateTime Date { get; set; }
-        public string Approved { get; set; }
+        public string Answer { get; set; }
 
         public DbApplication() { }
 
         public Application toApplication(ITProvider provider)
         {
-            return new Application(ProposalId, provider, ApplicationText, Date, (ApplicationAnswer)Enum.Parse(typeof(ApplicationAnswer), Approved));
+            return new Application(ProposalId, provider, ApplicationText, Date, Answer);
         }
 
         public void toDbApplication(Application app)
@@ -30,7 +30,7 @@ namespace SEP3.DbModel
             this.ITproviderUsername = app.Provider.Username;
             this.ApplicationText = app.ApplicationText;
             this.Date = app.Date;
-            this.Approved = Enum.GetName(typeof(ApplicationAnswer), app.Answer);
+            this.Answer = app.Answer;
         }
     }
 }

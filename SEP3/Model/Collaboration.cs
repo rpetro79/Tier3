@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEP3.Model
 {
+    [Serializable]
     public class Collaboration
     {
         [Key]

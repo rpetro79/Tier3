@@ -126,24 +126,5 @@ namespace SEP3.DbManagement
             }
             await _context.SaveChangesAsync();
         }
-
-        public async static Task AnswerApplciation(Application application, UserContext _context)
-        {
-            var app = await _context.Applications.SingleAsync(a => a.ProposalId == application.ProjectId && a.ITproviderUsername == application.Provider.Username);
-            Application a = app.toApplication(application.Provider);
-            if (application.Answer.Equals(ApplicationAnswer.APPROVED))
-            {
-                application.Answer = ApplicationAnswer.APPROVED;
-            }
-            else if (application.Answer.Equals(ApplicationAnswer.DECLINED))
-            {
-                application.Answer = ApplicationAnswer.DECLINED;
-            }
-            _context.Applications.Remove(app);
-            DbApplication dbapp = new DbApplication();
-            dbapp.toDbApplication(a);
-            _context.Applications.Add(dbapp);
-            await _context.SaveChangesAsync();
-        }
     }
 }

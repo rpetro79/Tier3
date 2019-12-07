@@ -9,12 +9,6 @@ using Newtonsoft.Json.Converters;
 namespace SEP3.Model
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum ApplicationAnswer
-    {
-        APPROVED,
-        DECLINED,
-        NOT_ANSWERED
-    }
 
 
     public class Application
@@ -24,7 +18,7 @@ namespace SEP3.Model
         public string ApplicationText { get; set; }
         public DateTime Date { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public ApplicationAnswer Answer { get; set; }
+        public string Answer { get; set; }
 
         public Application() { }
 
@@ -34,10 +28,10 @@ namespace SEP3.Model
             this.Provider = provider;
             this.ApplicationText = applicationText;
             this.Date = date;
-            this.Answer = ApplicationAnswer.NOT_ANSWERED;
+            this.Answer = "NOT_ANSWERED";
         }
 
-        public Application(string projectId, ITProvider provider, string applicationText, DateTime date, ApplicationAnswer answer)
+        public Application(string projectId, ITProvider provider, string applicationText, DateTime date, string answer)
         {
             this.ProjectId = projectId;
             this.Provider = provider;

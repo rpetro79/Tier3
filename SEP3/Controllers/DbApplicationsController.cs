@@ -40,7 +40,7 @@ namespace SEP3.Controllers
         // PUT: api/DbApplications/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutDbApplication(Application application)
         {
             bool x = ApplicationsDb.putApplication(application, _context);
@@ -64,28 +64,16 @@ namespace SEP3.Controllers
         }
 
         // DELETE: api/DbApplications/5
-        [HttpDelete("{projectId}/{username}")]
+        [HttpDelete("{projectId}/{providerUsername}")]
         public async Task<ActionResult<DbApplication>> DeleteDbApplication(string projectId, string providerUsername)
         {
-            ApplicationsDb.deleteApplication(projectId, providerUsername, _context);
+            await ApplicationsDb.deleteApplication(projectId, providerUsername, _context);
             return Ok();
         }
 
         private bool DbApplicationExists(int id)
         {
             return _context.Applications.Any(e => e.Id == id);
-        }
-
-        //PUT: api/DbApplications/3
-        [HttpPut]
-        public async Task<ActionResult> AnswerApplication(Application application)
-        {
-            await ApplicationsDb.AnswerApplciation(application,_context);
-            bool isDone = ProvidersAssignedDb.AssignProvider(application.ProjectId, application.Provider, _context);
-            if (isDone)
-                return Ok();
-            else
-                return Conflict();
         }
     }
 }
