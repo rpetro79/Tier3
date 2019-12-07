@@ -22,17 +22,17 @@ namespace SEP3.Migrations
                     table.PrimaryKey("PK_contactInfo", x => x.username);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "credentials",
-                columns: table => new
-                {
-                    username = table.Column<string>(nullable: false),
-                    password = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_credentials", x => x.username);
-                });
+            //migrationBuilder.CreateTable(
+            //    name: "credentials",
+            //    columns: table => new
+            //    {
+            //        username = table.Column<string>(nullable: false),
+            //        password = table.Column<string>(nullable: true)
+            //    },
+            //    constraints: table =>
+            //    {
+            //        table.PrimaryKey("PK_credentials", x => x.username);
+            //    });
 
             migrationBuilder.CreateTable(
                 name: "customers",
@@ -83,8 +83,8 @@ namespace SEP3.Migrations
                defaultValue: 0);
 
             //LATER
-            migrationBuilder.DropTable(
-                name: "credentials");
+            //migrationBuilder.DropTable(
+            //    name: "credentials");
 
             migrationBuilder.CreateTable(
                 name: "customerCredentials",
@@ -117,8 +117,8 @@ namespace SEP3.Migrations
             migrationBuilder.DropTable(
                name: "contactInfo");
 
-            migrationBuilder.DropTable(
-                name: "credentials");
+            //migrationBuilder.DropTable(
+            //    name: "credentials");
 
             migrationBuilder.DropTable(
                 name: "customers");

@@ -28,7 +28,7 @@ namespace SEP3
             //    try
             //    {
             //        var context = services.GetRequiredService<UserContext>();
-            //        /* DbSeeding.init(context);
+            //       // DbSeeding.init(context);
             //        List<DbProject> dbProjects = context.Projects.ToList<DbProject>();
             //        Customer c;
             //        DbCustomer customer;
@@ -45,14 +45,14 @@ namespace SEP3
             //            pm = new ProjectManagement(p.toProject(c));
             //            dbpm.toDbProjectManagement(pm);
             //            context.ProjectManagement.Add(dbpm);
-            //        context.SaveChanges();
+            //            context.SaveChanges();
             //        }
-            //        ITProvider p = new ITProvider("ralu79", "f", "f", new List<string>(), "f", new ContactInfo());
-            //        ITProvider p2 = new ITProvider("ingeru", "f", "f", new List<string>(), "f", new ContactInfo());
-            //        Application app = new Application("kiril211", p, "can you please choose me?", DateTime.Now);
+            //        ITProvider petw = new ITProvider("ralu79", "f", "f", new List<string>(), "f", new ContactInfo());
+            //        ITProvider p2 = new ITProvider("leksi12", "f", "f", new List<string>(), "f", new ContactInfo());
+            //        Application app = new Application("kiril211", petw, "can you please choose me?", DateTime.Now);
             //        Application app2 = new Application("kiril211", p2, "can you please choose me?", DateTime.Now);
             //        ApplicationsDb.postApplication(app, context);
-            //        ApplicationsDb.postApplication(app2, context);*/
+            //        ApplicationsDb.postApplication(app2, context);
 
             //    }
             //    catch (Exception ex)
@@ -62,6 +62,23 @@ namespace SEP3
 
             //    }
             //}
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<UserContext>();
+                    DbSeeding.init(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, ex.Message);
+
+                }
+            }
+
             host.Run();
         }
 
