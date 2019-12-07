@@ -72,6 +72,27 @@ namespace SEP3.DbManagement
             return true;
         }
 
+        public static bool AssignProvider(string projectId, ITProvider iTProvider, UserContext _context)
+        {
+            List<DbITProvidersAssigned> provs = _context.ITProvidersAssigned.Where(p => p.ProjectId == projectId).ToList<DbITProvidersAssigned>();
+            for(int i = 0; i < provs.Count; i++)
+            {
+                if (provs[i].ProviderUsername == iTProvider.Username && provs[i].ProjectId == projectId)
+                    return false;
+            }
+
+            _context.ITProvidersAssigned.Add(new DbITProvidersAssigned(iTProvider.Username, projectId));
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async static Task deleteProvidersAssignedToProject(string projectId, UserContext _context)
         {
             var itP = await _context.ITProvidersAssigned.Where(p => p.ProjectId == projectId).ToListAsync<DbITProvidersAssigned>();

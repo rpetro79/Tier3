@@ -75,5 +75,17 @@ namespace SEP3.Controllers
         {
             return _context.Applications.Any(e => e.Id == id);
         }
+
+        //PUT: api/DbApplications/3
+        [HttpPut]
+        public async Task<ActionResult> AnswerApplication(Application application)
+        {
+            await ApplicationsDb.AnswerApplciation(application,_context);
+            bool isDone = ProvidersAssignedDb.AssignProvider(application.ProjectId, application.Provider, _context);
+            if (isDone)
+                return Ok();
+            else
+                return Conflict();
+        }
     }
 }

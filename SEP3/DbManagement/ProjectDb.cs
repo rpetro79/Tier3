@@ -105,7 +105,7 @@ namespace SEP3.DbManagement
             }
 
             _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
         }
 

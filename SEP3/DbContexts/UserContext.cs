@@ -23,5 +23,6 @@ namespace SEP3.DbContexts
         public DbSet<DbITProvidersAssigned> ITProvidersAssigned { get; set; }
         public DbSet<DbApplication> Applications { get; set; }
         public DbSet<DbProject> Projects { get;set; }
+        public DbSet<DbCollaboration> Collaborations { get; set; }
     }
 }
