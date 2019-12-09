@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+SEP3/appsettings.json
+SEP3/DbSeeder/DbSeeding.cs
+SEP3/Program.cs
+SEP3/SEP3.csproj
