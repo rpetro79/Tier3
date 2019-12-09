@@ -66,7 +66,7 @@ namespace SEP3.Controllers
 
             if(n)
             {
-                return CreatedAtAction("GetProjects", project);
+                return Accepted();
             }
             else return Conflict();
         }

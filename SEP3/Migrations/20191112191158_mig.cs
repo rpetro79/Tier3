@@ -83,8 +83,8 @@ namespace SEP3.Migrations
                defaultValue: 0);
 
             //LATER
-            migrationBuilder.DropTable(
-                name: "credentials");
+            //migrationBuilder.DropTable(
+            //    name: "credentials");
 
             migrationBuilder.CreateTable(
                 name: "customerCredentials",

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEP3.DbContexts;
 
 namespace SEP3.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20191204153315_applications")]
+    partial class applications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,10 +28,10 @@ namespace SEP3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Answer")
+                    b.Property<string>("ApplicationText")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ApplicationText")
+                    b.Property<string>("Approved")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
@@ -44,38 +46,6 @@ namespace SEP3.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Applications");
-                });
-
-            modelBuilder.Entity("SEP3.DbModel.DbCategoryList", b =>
-                {
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Category");
-
-                    b.ToTable("CategoryList");
-                });
-
-            modelBuilder.Entity("SEP3.DbModel.DbCollaboration", b =>
-                {
-                    b.Property<string>("CollaborationId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CollaborationName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ITProviderName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CollaborationId");
-
-                    b.ToTable("Collaborations");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbContactInfo", b =>
@@ -220,16 +190,6 @@ namespace SEP3.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("technologies");
-                });
-
-            modelBuilder.Entity("SEP3.DbModel.DbTechnologyList", b =>
-                {
-                    b.Property<string>("Technology")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Technology");
-
-                    b.ToTable("TechnologyList");
                 });
 #pragma warning restore 612, 618
         }

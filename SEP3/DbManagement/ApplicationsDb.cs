@@ -12,7 +12,9 @@ namespace SEP3.DbManagement
 {
     public class ApplicationsDb
     {
-        public async static Task<List<Application>> getApplicationsAsync(string projectId, UserContext _context)
+        public static object AssignProvider { get; private set; }
+
+        public async static Task<List<Application>> getApplicationsForProjectAsync(string projectId, UserContext _context)
         {
             List<DbApplication> applications = _context.Applications.Where(app => app.ProposalId == projectId).ToList<DbApplication>();
             if (applications == null)
@@ -40,10 +42,13 @@ namespace SEP3.DbManagement
 
         public static bool putApplication(Application application, UserContext _context)
         {
-            DbApplication dbApp = _context.Applications.Single(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId);
-            dbApp.toDbApplication(application);
+            List<DbApplication> dbApps = _context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId).ToList<DbApplication>();
+            if (dbApps == null || dbApps.Count == 0)
+                return false;
+            
+            dbApps[0].toDbApplication(application);
 
-            _context.Entry(dbApp).State = EntityState.Modified;
+            _context.Entry(dbApps[0]).State = EntityState.Modified;
             try
             {
                 _context.SaveChanges();
@@ -57,9 +62,12 @@ namespace SEP3.DbManagement
 
         public static bool postApplication(Application application, UserContext _context)
         {
-            if (_context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId).Any())
-                return false;
-
+            /*if (_context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId).Any())
+                return false;*/
+            /*if (_context.Applications.Any(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId))
+                return false;*/
+            DateTime d = DateTime.Now;
+            application.Date = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second);
             DbApplication app = new DbApplication();
             app.toDbApplication(application);
             _context.Applications.Add(app);
@@ -75,7 +83,7 @@ namespace SEP3.DbManagement
             return true;
         }
 
-        public async static Task deleteApplications(string projectId, UserContext _context)
+        public async static Task deleteApplicationsOnProject(string projectId, UserContext _context)
         {
             var apps = await _context.Applications.Where(a => a.ProposalId == projectId).ToListAsync<DbApplication>();
             if (apps == null)
@@ -90,9 +98,9 @@ namespace SEP3.DbManagement
             await _context.SaveChangesAsync();
         }
 
-        public async static Task deleteApplication(Application application, UserContext _context)
+        public async static Task deleteApplication(string projectId, string providerUsername, UserContext _context)
         {
-            var app = await _context.Applications.SingleAsync(a => a.ProposalId == application.ProjectId && a.ITproviderUsername == application.Provider.Username);
+            var app = await _context.Applications.SingleAsync(a => a.ProposalId == projectId && a.ITproviderUsername == providerUsername);
             
             if (app == null)
             {
@@ -100,6 +108,22 @@ namespace SEP3.DbManagement
             }
 
             _context.Applications.Remove(app);
+            await _context.SaveChangesAsync();
+        }
+
+        public async static Task deleteApplicationsOfProvider(string providerUsername, UserContext _context)
+        {
+            var app = await _context.Applications.Where(a => a.ITproviderUsername == providerUsername).ToListAsync();
+
+            if (app == null)
+            {
+                return;
+            }
+
+            foreach(DbApplication a in app)
+            {
+                _context.Applications.Remove(a);
+            }
             await _context.SaveChangesAsync();
         }
     }

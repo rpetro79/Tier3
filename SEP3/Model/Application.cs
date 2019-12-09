@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace SEP3.Model
 {
-    public enum ApplicationAnswer
-    {
-        APPROVED,
-        DECLINED,
-        NOT_ANSWERED
-    }
+    [JsonConverter(typeof(StringEnumConverter))]
 
 
     public class Application
@@ -20,7 +17,8 @@ namespace SEP3.Model
         public ITProvider Provider { get; set; }
         public string ApplicationText { get; set; }
         public DateTime Date { get; set; }
-        public ApplicationAnswer Approved { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public string Answer { get; set; }
 
         public Application() { }
 
@@ -30,16 +28,16 @@ namespace SEP3.Model
             this.Provider = provider;
             this.ApplicationText = applicationText;
             this.Date = date;
-            this.Approved = ApplicationAnswer.NOT_ANSWERED;
+            this.Answer = "NOT_ANSWERED";
         }
 
-        public Application(string projectId, ITProvider provider, string applicationText, DateTime date, ApplicationAnswer approved)
+        public Application(string projectId, ITProvider provider, string applicationText, DateTime date, string answer)
         {
             this.ProjectId = projectId;
             this.Provider = provider;
             this.ApplicationText = applicationText;
             this.Date = date;
-            this.Approved = approved;
+            this.Answer = answer;
         }
     }
 }

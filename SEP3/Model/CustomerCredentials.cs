@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SEP3.Model
 {
+
     public class CustomerCredentials
     {
         public string Password { get; set; }

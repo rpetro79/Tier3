@@ -23,5 +23,12 @@ namespace SEP3.Model
             this.Applications = aps;
             this.AssignedProviders = providers;
         }
+        
+        public ProjectManagement(Project p)
+        {
+            this.project = p;
+            Applications = new List<Application>();
+            AssignedProviders = new List<ITProvider>();
+        }
     }
 }

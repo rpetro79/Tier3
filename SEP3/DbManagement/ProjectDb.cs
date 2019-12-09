@@ -105,8 +105,18 @@ namespace SEP3.DbManagement
             }
 
             _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
+        }
+
+        public async static Task deleteProjectFromCustomer(string username, UserContext _context)
+        {
+            var projects = _context.Projects.Where(p => p.customerUsername == username).ToList();
+            foreach(DbProject p in projects)
+            {
+                _context.Projects.Remove(p);
+                _context.SaveChanges();
+            }
         }
 
         private static bool ProjectExists(string id, UserContext _context)

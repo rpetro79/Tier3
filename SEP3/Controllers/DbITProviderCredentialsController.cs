@@ -23,18 +23,21 @@ namespace SEP3.Controllers
             _context = context;
         }
 
-        // GET: api/DbITProviderCredentials
+        /*// GET: api/DbITProviderCredentials
         [HttpGet]
         public async Task<IEnumerable<ITProviderCredentials>> GetDbITProviderCredentials()
         {
             return await ITProviderDb.GetITProviderCredentialsAsync(_context);
-        }
+        }*/
 
         // GET: api/DbITProviderCredentials/5
         [HttpGet("{username}")]
         public async Task<ActionResult<ITProviderCredentials>> GetDbITProviderCredentials(string username)
         {
-            return await ITProviderDb.GetITProviderCredentialsAsync(username, _context);
+            var prov = await ITProviderDb.GetITProviderCredentialsAsync(username, _context);
+            if (prov == null)
+                return NotFound();
+            return prov;
         }
 
         // PUT: api/DbITProviderCredentials/5

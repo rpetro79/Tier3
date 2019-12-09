@@ -21,9 +21,9 @@ namespace SEP3.DbModel
             this.Description = c.Description;
         }
 
-        public Customer toCustomer(DbContactInfo ci)
+        public Customer toCustomer(ContactInfo ci)
         {
-            return new Customer(Username, Name, Description, ci.toContactInfo());
+            return new Customer(Username, Name, Description, ci);
         }
     }
 }
