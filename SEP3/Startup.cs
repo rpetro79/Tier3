@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using SEP3.DbContexts;
+using SEP3.SwaggerConfig;
+using Swashbuckle.AspNetCore.Swagger;
+using SwaggerOptions = SEP3.SwaggerConfig.SwaggerOptions;
 
 namespace SEP3
 {
@@ -31,6 +34,10 @@ namespace SEP3
                 options.UseSqlServer(Configuration.GetConnectionString("SEP3Db")));
             
             services.AddControllers();
+            services.AddSwaggerGen(x =>
+                {
+                    x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo());
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +47,19 @@ namespace SEP3
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //Swagger configuration
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option =>
+            {
+                option.RouteTemplate = swaggerOptions.JsonRoute;
+            });
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
+            });
 
             //app.UseHttpsRedirection();
 
