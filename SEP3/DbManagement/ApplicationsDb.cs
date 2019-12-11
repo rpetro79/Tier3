@@ -67,7 +67,8 @@ namespace SEP3.DbManagement
             /*if (_context.Applications.Any(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId))
                 return false;*/
             DateTime d = DateTime.Now;
-            application.Date = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second);
+            //application.Date = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second);
+            application.Date = d.ToString();
             DbApplication app = new DbApplication();
             app.toDbApplication(application);
             _context.Applications.Add(app);

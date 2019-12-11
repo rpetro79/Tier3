@@ -16,13 +16,13 @@ namespace SEP3.Model
         public string ProjectId { get; set; }
         public ITProvider Provider { get; set; }
         public string ApplicationText { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public string Answer { get; set; }
 
         public Application() { }
 
-        public Application(string projectId, ITProvider provider, string applicationText, DateTime date)
+        public Application(string projectId, ITProvider provider, string applicationText, string date)
         {
             this.ProjectId = projectId;
             this.Provider = provider;
@@ -31,7 +31,7 @@ namespace SEP3.Model
             this.Answer = "NOT_ANSWERED";
         }
 
-        public Application(string projectId, ITProvider provider, string applicationText, DateTime date, string answer)
+        public Application(string projectId, ITProvider provider, string applicationText, string  date, string answer)
         {
             this.ProjectId = projectId;
             this.Provider = provider;

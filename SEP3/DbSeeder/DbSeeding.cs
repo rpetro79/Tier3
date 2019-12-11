@@ -161,10 +161,10 @@ namespace SEP3.DbSeeder
 
             if (!context.Applications.Any())
             {
-                context.Applications.Add(new DbApplication() { Id = 1, ProposalId = "leski371", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "karla7", Date = DateTime.Now });
-                context.Applications.Add(new DbApplication() { Id = 2, ProposalId = "leski371", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "ralu79", Date = DateTime.Now });
-                context.Applications.Add(new DbApplication() { Id = 3, ProposalId = "lena131", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "karla7", Date = DateTime.Now });
-                context.Applications.Add(new DbApplication() { Id = 4, ProposalId = "lena131", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "ralu79", Date = DateTime.Now });
+                context.Applications.Add(new DbApplication() { Id = 1, ProposalId = "leski371", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "karla7", Date = DateTime.Now.ToString() });
+                context.Applications.Add(new DbApplication() { Id = 2, ProposalId = "leski371", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "ralu79", Date = DateTime.Now.ToString() });
+                context.Applications.Add(new DbApplication() { Id = 3, ProposalId = "lena131", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "karla7", Date = DateTime.Now.ToString() });
+                context.Applications.Add(new DbApplication() { Id = 4, ProposalId = "lena131", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "ralu79", Date = DateTime.Now.ToString() });
             }
 
             if (!context.Collaborations.Any()) 

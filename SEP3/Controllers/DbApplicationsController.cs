@@ -38,8 +38,6 @@ namespace SEP3.Controllers
         }
 
         // PUT: api/DbApplications/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
         public async Task<IActionResult> PutDbApplication(Application application)
         {
@@ -51,8 +49,6 @@ namespace SEP3.Controllers
         }
 
         // POST: api/DbApplications
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<DbApplication>> PostDbApplication(Application application)
         {

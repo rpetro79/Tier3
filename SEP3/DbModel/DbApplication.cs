@@ -14,7 +14,7 @@ namespace SEP3.DbModel
         public string ProposalId { get; set; }
         public string ITproviderUsername { get; set; }
         public string ApplicationText { get; set; }
-        public DateTime Date { get; set; }
+        public string  Date { get; set; }
         public string Answer { get; set; }
 
         public DbApplication() { }
