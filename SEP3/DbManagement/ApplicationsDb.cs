@@ -67,8 +67,9 @@ namespace SEP3.DbManagement
             /*if (_context.Applications.Any(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId))
                 return false;*/
             DateTime d = DateTime.Now;
-            //application.Date = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second);
-            application.Date = d.ToString();
+            DateTime date = new DateTime(d.Year, d.Month, d.Day);
+            application.Date = date.ToString();
+            application.Answer = "NOT_ANSWERED";
             DbApplication app = new DbApplication();
             app.toDbApplication(application);
             _context.Applications.Add(app);
@@ -77,7 +78,7 @@ namespace SEP3.DbManagement
             {
                 _context.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (Exception)
             {
                 return false;
             }

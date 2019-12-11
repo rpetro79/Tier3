@@ -17,7 +17,6 @@ namespace SEP3.Model
         public ITProvider Provider { get; set; }
         public string ApplicationText { get; set; }
         public string Date { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
         public string Answer { get; set; }
 
         public Application() { }
