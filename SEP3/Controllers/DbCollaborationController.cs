@@ -21,6 +21,15 @@ namespace SEP3.Controllers
             _context = context;
         }
 
+        [HttpGet("all")]
+        public async Task<ActionResult<CollaborationList>> GetAllCollaborations()
+        {
+            CollaborationList list = new CollaborationList();
+            list.list = await CollaborationDb.getAllCollaborationsAsync(_context);
+            return list;
+
+        }
+
         //GET: api/Collaborations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Collaboration>>> GetCollaborations()

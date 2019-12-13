@@ -28,6 +28,7 @@ namespace SEP3.Model
             this.Username = username;
             this.Name = name;
             this.Description = description;
+           // this.Technologies = techs;
             Technologies = new List<string>();
             foreach (string t in techs)
             {
@@ -44,6 +45,7 @@ namespace SEP3.Model
             this.Username = username;
             this.Name = name;
             this.Description = description;
+            this.Technologies = techs;
             Technologies = new List<string>();
 
             foreach (string t in techs)

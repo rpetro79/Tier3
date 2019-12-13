@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace SEP3.Model
 {
-    [Serializable]
     public class Collaboration
     {
         [Key]
@@ -18,10 +17,10 @@ namespace SEP3.Model
 
         public Collaboration() { }
 
-        public Collaboration(string collaborationId, ITProvider iTProvider, string collaborationName, string description, string category)
+        public Collaboration(string collaborationId, ITProvider ITProvider, string collaborationName, string description, string category)
         {
             CollaborationId = collaborationId;
-            ITProvider = iTProvider;
+            this.ITProvider = ITProvider;
             CollaborationName = collaborationName;
             Description = description;
             Category = category;

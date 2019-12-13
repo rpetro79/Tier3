@@ -25,6 +25,19 @@ namespace SEP3.DbManagement
             return collaborations;
         }
 
+        public async static Task<List<Collaboration>> getAllCollaborationsAsync(UserContext _context)
+        {
+            List<DbCollaboration> collaborations= _context.Collaborations.ToList<DbCollaboration>();
+            List<Collaboration> cs = new List<Collaboration>();
+            ITProvider itp;
+            foreach (DbCollaboration c in collaborations)
+            {
+                itp = await ITProviderDb.getITProviderAsync(c.ITProviderName, _context);
+                cs.Add(c.toCollaboration(itp));
+            }
+            return cs;
+        }
+
         //Get collaboration by id
         public async static Task<Collaboration> GetCollaborationAsync(string collaborationId, UserContext _context)
         {
@@ -123,7 +136,18 @@ namespace SEP3.DbManagement
             }
         }
 
-
+        public async static Task<List<Collaboration>> getCollaborationsAsync(UserContext _context)
+        {
+            List<DbCollaboration> collaborations = _context.Collaborations.ToList<DbCollaboration>();
+            List<Collaboration> cs = new List<Collaboration>();
+            ITProvider itp;
+            foreach (DbCollaboration p in collaborations)
+            {
+               itp = await ITProviderDb.getITProviderAsync(p.ITProviderName, _context);
+                cs.Add(p.toCollaboration(itp));
+            }
+            return cs;
+        }
 
     }
 }

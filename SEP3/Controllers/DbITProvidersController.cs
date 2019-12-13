@@ -31,10 +31,23 @@ namespace SEP3.Controllers
         }
 
         // GET: api/DbITProviders/5
-        [HttpGet("{username}")]
+        [HttpGet("user/{username}")]
         public async Task<ActionResult<ITProvider>> GetITProvider(string username)
         {
             var provider = await ITProviderDb.getITProviderAsync(username, _context);
+
+            if (provider == null)
+            {
+                return NotFound();
+            }
+
+            return provider;
+        }
+
+        [HttpGet("{collaborationId}")]
+        public async Task<ActionResult<ITProvider>> GetITProviderByCollaboration(string collaborationId)
+        {
+            var provider = await ITProviderDb.getITProviderFromCollaborationAsync(collaborationId, _context);
 
             if (provider == null)
             {

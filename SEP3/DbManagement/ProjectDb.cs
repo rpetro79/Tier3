@@ -12,6 +12,7 @@ namespace SEP3.DbManagement
 {
     public class ProjectDb
     {
+
         public async static Task<List<Project>> getProjectsAsync(UserContext _context)
         {
             List<DbProject> projects = _context.Projects.ToList<DbProject>();

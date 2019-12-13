@@ -16,7 +16,7 @@ namespace SEP3.DbManagement
 
         public async static Task<List<Application>> getApplicationsForProjectAsync(string projectId, UserContext _context)
         {
-            List<DbApplication> applications = _context.Applications.Where(app => app.ProposalId == projectId).ToList<DbApplication>();
+            List<DbApplication> applications = _context.Applications.Where(app => app.ProposalId == projectId && app.Answer.Equals("NOT_ANSWERED")).ToList<DbApplication>();
             if (applications == null)
                 return new List<Application>();
             List<Application> apps = new List<Application>();
@@ -49,6 +49,11 @@ namespace SEP3.DbManagement
             dbApps[0].toDbApplication(application);
 
             _context.Entry(dbApps[0]).State = EntityState.Modified;
+            if (application.Answer.Equals("APPROVED"))
+            {
+                DbITProvidersAssigned toAdd = new DbITProvidersAssigned(application.Provider.Username, application.ProjectId);
+                _context.ITProvidersAssigned.Add(toAdd);
+            }
             try
             {
                 _context.SaveChanges();

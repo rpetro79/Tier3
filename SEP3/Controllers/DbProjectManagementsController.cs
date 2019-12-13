@@ -47,6 +47,23 @@ namespace SEP3.Controllers
             return projectsManagement;
         }
 
+        [HttpGet("id/{projectId}")]
+        public async Task<ActionResult<ProjectManagement>> GetProjectManagementById(string projectId)
+        {
+            //ProjectManagement projectManagement = await ProjectManagementDb.getProjectsManagementAsync(projectId, _context);
+
+            //if (projectManagement == null)
+            //{
+            //    return NotFound();
+            //}
+            //return projectManagement;
+
+            var projectManagement = await ProjectManagementDb.getProjectManagementAsync(projectId, _context);
+            if (projectManagement == null)
+                return NotFound();
+            return projectManagement;
+        }
+
         // PUT: api/DbProjectManagements/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

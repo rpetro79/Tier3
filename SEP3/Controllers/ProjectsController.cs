@@ -26,8 +26,18 @@ namespace SEP3.Controllers
         // GET: api/Projects
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
-        {            
+        {
             return await ProjectDb.getProjectsAsync(_context);
+        }
+
+        // GET: api/Projects
+        [HttpGet("all")]
+        public async Task<ActionResult<ProjectList>> GetAllProjects()
+        {
+            ProjectList list = new ProjectList();
+            list.list = await ProjectDb.getProjectsAsync(_context);
+            return list;
+
         }
 
         // GET: api/Projects/5

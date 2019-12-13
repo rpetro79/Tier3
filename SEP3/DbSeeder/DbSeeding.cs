@@ -28,7 +28,8 @@ namespace SEP3.DbSeeder
                 context.TechnologyList.Add(new DbTechnologyList() { Technology = "FrontEnd" });
                 context.TechnologyList.Add(new DbTechnologyList() { Technology = "Assembly" });
             }
-
+         
+            
             if (!context.CategoryList.Any())
             {
                 context.CategoryList.Add(new DbCategoryList() {Category = "Web Application"});
@@ -40,10 +41,10 @@ namespace SEP3.DbSeeder
 
             List<string> techs = new List<string>() { "Java", "C#", "C++", "Php"};
 
-            ITProviderCredentials user = new ITProviderCredentials("147258", new ITProvider("ralu79", "Raluca-Elena Petrovici", "Find a flaw. I dare you.", 5, 10, techs, "individual", new ContactInfo("Kollegievaenget 5", "12345678", "279998@via.dk")));
-            ITProviderCredentials user2 = new ITProviderCredentials("258147", new ITProvider("leksi3", "Aleksandra Angelova Aleksandrova", "Everything is better with Christmas decorations!!",5, 10, techs, "individual", new ContactInfo("Mollersgade 12", "12345678", "280015@via.dk")));
-            ITProviderCredentials user3 = new ITProviderCredentials("987654", new ITProvider("karla7", "Karla Jajic", "Got my facts on point.",5, 10, techs, "individual", new ContactInfo("Amaliegade 8", "12345678", "280066@via.dk")));
-            ITProviderCredentials user4 = new ITProviderCredentials("321654", new ITProvider("lenaB", "Lena Bojanowska", "A little party never killed anyone.",5, 10, techs, "individual", new ContactInfo("Hybenvej 10", "12345678", "280069@via.dk")));
+            ITProviderCredentials user = new ITProviderCredentials("147258", new ITProvider("ralu79", "Raluca-Elena Petrovici", "Find a flaw. I dare you.", 5.2, 10, techs, "individual", new ContactInfo("Kollegievaenget 5", "12345678", "279998@via.dk")));
+            ITProviderCredentials user2 = new ITProviderCredentials("258147", new ITProvider("leksi3", "Aleksandra Angelova Aleksandrova", "Everything is better with Christmas decorations!!",5.1, 10, techs, "individual", new ContactInfo("Mollersgade 12", "12345678", "280015@via.dk")));
+            ITProviderCredentials user3 = new ITProviderCredentials("987654", new ITProvider("karla7", "Karla Jajic", "Got my facts on point.",5.2, 10, techs, "individual", new ContactInfo("Amaliegade 8", "12345678", "280066@via.dk")));
+            ITProviderCredentials user4 = new ITProviderCredentials("321654", new ITProvider("lenaB", "Lena Bojanowska", "A little party never killed anyone.",5.3, 10, techs, "individual", new ContactInfo("Hybenvej 10", "12345678", "280069@via.dk")));
 
             CustomerCredentials cust = new CustomerCredentials("123", new Customer()
             {

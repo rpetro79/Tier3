@@ -43,6 +43,29 @@ namespace SEP3.DbManagement
             return users;
         }
 
+        public async static Task<ActionResult<ITProvider>> getITProviderFromCollaborationAsync(string collaborationId, UserContext context)
+        {
+            DbCollaboration collaboration = await context.Collaborations.FindAsync(collaborationId);
+            if(collaboration == null)
+            {
+                return null;
+            }
+            String iTProviderName = collaboration.ITProviderName;
+            DbITProvider dbIT =await context.ITProviders.FindAsync(iTProviderName);
+            if (dbIT == null)
+                return null;
+            DbContactInfo contactInfo = await context.contactInfo.FindAsync(iTProviderName);
+            ContactInfo ci = contactInfo.toContactInfo();
+            List<DbTechnologies> dbtech = await context.technologies.Where(m => m.Username == iTProviderName).ToListAsync();
+            List<string> t = new List<string>();
+            foreach(var db in dbtech)
+            {
+                t.Add(db.Technology);
+            }
+            ITProvider itp = dbIT.toITProvider(ci, t);
+            return itp;
+        }
+
         public async static Task<bool> putITProviderAsync(ITProvider provider, UserContext _context)
         {
             DbITProvider dbProvider = new DbITProvider();
@@ -141,13 +164,13 @@ namespace SEP3.DbManagement
         public async static Task<bool> postITProviderCredentialsAsync(ITProviderCredentials credentials, UserContext _context)
         {
 
-            Task<bool> task = postITProviderAsync(credentials.Provider, _context);
+            bool x = await postITProviderAsync(credentials.Provider, _context);
 
             DbCredentials dbCredentials = new DbCredentials();
             dbCredentials.toDbITProviderCredentials(credentials);
             _context.credentials.Add(dbCredentials);
 
-            bool x = await task;
+             
 
             if (x)
             {

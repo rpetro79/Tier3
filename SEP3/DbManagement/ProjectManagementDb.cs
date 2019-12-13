@@ -44,6 +44,18 @@ namespace SEP3.DbManagement
             return pms;
         }
 
+        //public async static Task<ProjectManagement> getProjectsManagementByIdAsync(string id, UserContext _context)
+        //{
+        //    List<DbProjectManagement> projectManagement = await _context.ProjectManagement.Where(pm => pm.ProjectId == id).ToListAsync<DbProjectManagement>();
+        //    ProjectManagement pms = new ProjectManagement();
+        //    foreach (DbProjectManagement pm in projectManagement)
+        //    {
+        //        pms = await toProjectManagementAsync(pm, _context);
+        //    }
+
+        //    return pms;
+        //}
+
         public async static Task<bool> putProjectManagementAsync(ProjectManagement pm, UserContext _context)
         {
             DbProjectManagement p = _context.ProjectManagement.Find(pm.project.ProjectId);
