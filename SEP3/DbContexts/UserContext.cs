@@ -24,7 +24,9 @@ namespace SEP3.DbContexts
         public DbSet<DbApplication> Applications { get; set; }
         public DbSet<DbProject> Projects { get;set; }
         public DbSet<DbCollaboration> Collaborations { get; set; }
+        public DbSet<DbCollaborationManagement> CollaborationManagement { get; set; }
         public DbSet<DbTechnologyList> TechnologyList { get; set; }
         public DbSet<DbCategoryList> CategoryList { get; set; }
+       // public object CollaborationManagement { get; internal set; }
     }
 }

@@ -125,6 +125,20 @@ namespace SEP3.DbManagement
             return _context.Projects.Any(e => e.ProjectId == id);
         }
 
+        public async static Task<List<Project>> getProjectsByCustomerUsernameAsync(string customerUsername, UserContext _context)
+        {
+            List<DbProject> projects = _context.Projects.ToList<DbProject>();
+            List<Project> pr = new List<Project>();
+            Customer c;
+            foreach (DbProject p in projects)
+            {
+
+                c = await CustomerDb.getCustomerAsync(p.customerUsername, _context);
+                if (c.Username == customerUsername)
+                    pr.Add(p.toProject(c));
+            }
+            return pr;
+        }
 
     }
 }

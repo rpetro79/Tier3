@@ -16,7 +16,7 @@ namespace SEP3.DbManagement
 
         public async static Task<List<Application>> getApplicationsForProjectAsync(string projectId, UserContext _context)
         {
-            List<DbApplication> applications = _context.Applications.Where(app => app.ProposalId == projectId && app.Answer.Equals("NOT_ANSWERED")).ToList<DbApplication>();
+            List<DbApplication> applications = _context.Applications.Where(app => app.ProjectId == projectId && app.Answer.Equals("NOT_ANSWERED")).ToList<DbApplication>();
             if (applications == null)
                 return new List<Application>();
             List<Application> apps = new List<Application>();
@@ -42,7 +42,7 @@ namespace SEP3.DbManagement
 
         public static bool putApplication(Application application, UserContext _context)
         {
-            List<DbApplication> dbApps = _context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId).ToList<DbApplication>();
+            List<DbApplication> dbApps = _context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProjectId == application.ProjectId).ToList<DbApplication>();
             if (dbApps == null || dbApps.Count == 0)
                 return false;
             
@@ -92,7 +92,7 @@ namespace SEP3.DbManagement
 
         public async static Task deleteApplicationsOnProject(string projectId, UserContext _context)
         {
-            var apps = await _context.Applications.Where(a => a.ProposalId == projectId).ToListAsync<DbApplication>();
+            var apps = await _context.Applications.Where(a => a.ProjectId == projectId).ToListAsync<DbApplication>();
             if (apps == null)
             {
                 return;
@@ -107,7 +107,7 @@ namespace SEP3.DbManagement
 
         public async static Task deleteApplication(string projectId, string providerUsername, UserContext _context)
         {
-            var app = await _context.Applications.SingleAsync(a => a.ProposalId == projectId && a.ITproviderUsername == providerUsername);
+            var app = await _context.Applications.SingleAsync(a => a.ProjectId == projectId && a.ITproviderUsername == providerUsername);
             
             if (app == null)
             {

@@ -30,7 +30,7 @@ namespace SEP3.Model
             this.Answer = "NOT_ANSWERED";
         }
 
-        public Application(string projectId, ITProvider provider, string applicationText, string  date, string answer)
+        public Application (string projectId, ITProvider provider, string applicationText, string  date, string answer)
         {
             this.ProjectId = projectId;
             this.Provider = provider;
