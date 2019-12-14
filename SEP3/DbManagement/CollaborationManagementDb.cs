@@ -21,17 +21,19 @@ namespace SEP3.DbManagement
 
         private async static Task<CollaborationManagement> toCollaborationManagementAsync(DbCollaborationManagement collaborationManagement, UserContext _context)
         {
-            Collaboration collaboration = await CollaborationDb.GetCollaborationAsync(collaborationManagement.CollaborationId, _context);
+            Collaboration collaboration = await CollaborationDb.GetCollaborationAsync(collaborationManagement.ProjectId, _context);
 
-            List<ITProvider> providers = await ITProvidersOnCollaborationDb.getProvidersOnCollaboration(collaborationManagement.CollaborationId, _context);
+            List<ITProvider> providers = await ProvidersAssignedDb.getProvidersAssigned(collaborationManagement.ProjectId, _context);
 
-            CollaborationManagement cm = collaborationManagement.toCollaborationManagement(collaboration, providers);
+            List<Application> apps = await ApplicationsDb.getApplicationsForProjectAsync(collaborationManagement.ProjectId, _context);
+    
+            CollaborationManagement cm = collaborationManagement.toCollaborationManagement(collaboration, providers, apps);
             return cm;
         }
 
         public async static Task<List<CollaborationManagement>> getCollaborationManagementOfUserAsync(string username, UserContext _context)
         {
-            List<DbCollaborationManagement> collaborationManagement = await _context.CollaborationManagement.Where(pm => pm.CollaborationId.Substring(0, username.Length) == username).ToListAsync<DbCollaborationManagement>();
+            List<DbCollaborationManagement> collaborationManagement = await _context.CollaborationManagement.Where(pm => pm.ProjectId.Substring(0, username.Length) == username).ToListAsync<DbCollaborationManagement>();
             List<CollaborationManagement> cmanage = new List<CollaborationManagement>();
             foreach (DbCollaborationManagement cm in collaborationManagement)
             {
@@ -43,16 +45,18 @@ namespace SEP3.DbManagement
 
         public async static Task<bool> putCollaborationManagementAsync(CollaborationManagement cm, UserContext _context)
         {
-            DbCollaborationManagement c = _context.CollaborationManagement.(cm.Collaboration.CollaborationId);
+            DbCollaborationManagement c = _context.CollaborationManagement.Find(cm.Collaboration.ProjectId);
             if (c == null)
                 return false;
             c.toDbCollaborationManagement(cm);
             _context.Entry(c).State = EntityState.Modified;
             bool x = await CollaborationDb.PutCollaborationAsync(cm.Collaboration, _context);
-
             if (!x)
                 return false;
-            x = ITProvidersOnCollaborationDb.putProvidersOnCollaboration(cm.Collaboration.CollaborationId, cm.ProvidersOnCollaboration, _context);
+            x = ApplicationsDb.putApplications(cm.ITProvidersApplications, _context);
+            if (!x)
+                return false;
+            x = ProvidersAssignedDb.putProvidersAssigned(cm.Collaboration.ProjectId, cm.ITProvidersOnCollaboration, _context);
             if (!x)
                 return false;
 
@@ -69,7 +73,7 @@ namespace SEP3.DbManagement
 
         public async static Task<bool> postCollaborationManagementAsync(CollaborationManagement cm, UserContext _context)
         {
-            DbCollaborationManagement c = _context.CollaborationManagement.Find(cm.Collaboration.CollaborationId);
+            DbCollaborationManagement c = _context.CollaborationManagement.Find(cm.Collaboration.ProjectId);
             if (c != null)
                 return false;
             bool x = await CollaborationDb.PostCollaborationAsync(cm.Collaboration, _context);
@@ -91,11 +95,11 @@ namespace SEP3.DbManagement
             return true;
         }
 
-        public async static Task deleteCollaborationManagement(string collaborationId, UserContext _context)
+        public async static Task deleteCollaborationManagement(string projectId, UserContext _context)
         {
-            var collaborationM = await _context.CollaborationManagement.FindAsync(collaborationId);
-            await CollaborationDb.DeleteCollaborationFromITProvider(collaborationId, _context);
-            await ITProvidersOnCollaborationDb.deleteProvidersOnCollaboration(collaborationId, _context);
+            var collaborationM = await _context.CollaborationManagement.FindAsync(projectId);
+            await CollaborationDb.DeleteCollaborationFromITProvider(projectId, _context);
+            await ProvidersAssignedDb.deleteProvidersAssignedToProject(projectId, _context);
 
             if (collaborationM == null)
             {
@@ -106,13 +110,13 @@ namespace SEP3.DbManagement
             await _context.SaveChangesAsync();
         }
 
-        public async static Task DeleteAllCollaborationsFromITProvider(string username, UserContext _context)
+        public async static Task deleteAllCollaborationsFromITProvider(string username, UserContext _context)
         {
-            var collaborationMs = _context.CollaborationManagement.Where(c => c.CollaborationId.Substring(0, username.Length) == username).ToList();
+            var collaborationMs = _context.CollaborationManagement.Where(c => c.ProjectId.Substring(0, username.Length) == username).ToList();
 
             foreach (DbCollaborationManagement cm in collaborationMs)
             {
-                await deleteCollaborationManagement(cm.CollaborationId, _context);
+                await deleteCollaborationManagement(cm.ProjectId, _context);
             }
         }
     }

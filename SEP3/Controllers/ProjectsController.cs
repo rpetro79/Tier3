@@ -89,5 +89,14 @@ namespace SEP3.Controllers
 
             return Ok();
         }
+
+        [HttpGet("customer/{customerUsername}")]
+        public async Task<ActionResult<ProjectList>> GetAllProjectsByCustomerUsername(String customerUsername)
+        {
+            ProjectList list = new ProjectList();
+            list.list = await ProjectDb.getProjectsByCustomerUsernameAsync(customerUsername, _context);
+            return list;
+
+        }
     }
 }

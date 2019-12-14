@@ -10,17 +10,17 @@ namespace SEP3.DbModel
     public class DbCollaborationManagement
     {
         [Key]
-        public string CollaborationId { get; set; }
+        public string ProjectId { get; set; }
         public bool Closed { get; set; }
 
-        public CollaborationManagement toCollaborationManagement(Collaboration collaboration, List<ITProvider> providers)
+        public CollaborationManagement toCollaborationManagement(Collaboration collaboration, List<ITProvider> providers, List<Application> apps)
         {
-            return new CollaborationManagement(collaboration, Closed, providers);
+            return new CollaborationManagement(collaboration, Closed, providers,apps);
         }
 
         public void toDbCollaborationManagement(CollaborationManagement cm)
         {
-            this.CollaborationId = cm.Collaboration.CollaborationId;
+            this.ProjectId = cm.Collaboration.ProjectId;
             this.Closed = cm.Closed;
 
         }

@@ -9,21 +9,25 @@ namespace SEP3.Model
     {
         public Collaboration Collaboration { get; set; }
         public bool Closed { get; set; }
-        public List<ITProvider> ProvidersOnCollaboration { get; set; }
+        public List<ITProvider> ITProvidersOnCollaboration { get; set; }
+        public List<Application> ITProvidersApplications { get; set; }
+        
 
         public CollaborationManagement() { }
 
-        public CollaborationManagement(Collaboration C, bool closed, List<ITProvider> poc)
+        public CollaborationManagement(Collaboration C, bool closed, List<ITProvider> itpoc, List<Application> apps)
         {
             this.Collaboration = C;
             this.Closed = closed;
-            this.ProvidersOnCollaboration = poc;
+            this.ITProvidersOnCollaboration = itpoc;
+            this.ITProvidersApplications = apps;
         }
 
         public CollaborationManagement(Collaboration C)
         {
             this.Collaboration = C;
-            ProvidersOnCollaboration = new List<ITProvider>();
+            ITProvidersOnCollaboration = new List<ITProvider>();
+            ITProvidersApplications = new List<Application>();
         }
     }
 }
