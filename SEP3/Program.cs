@@ -28,7 +28,7 @@ namespace SEP3
                 try
                 {
                     var context = services.GetRequiredService<UserContext>();
-                    DbSeeding.init(context);
+                   // DbSeeding.init(context);
                     //List<DbProject> dbProjects = context.Projects.ToList<DbProject>();
                     //Customer c;
                     //DbCustomer customer;
