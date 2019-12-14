@@ -9,7 +9,7 @@ namespace SEP3.Model
     public class Collaboration
     {
         [Key]
-        public string CollaborationId { get; set; }
+        public string ProjectId { get; set; }
         public ITProvider ITProvider { get; set; }
         public string CollaborationName { get; set; }
         public string Description { get; set; }
@@ -17,9 +17,9 @@ namespace SEP3.Model
 
         public Collaboration() { }
 
-        public Collaboration(string collaborationId, ITProvider ITProvider, string collaborationName, string description, string category)
+        public Collaboration(string projectId, ITProvider ITProvider, string collaborationName, string description, string category)
         {
-            CollaborationId = collaborationId;
+            ProjectId = projectId;
             this.ITProvider = ITProvider;
             CollaborationName = collaborationName;
             Description = description;

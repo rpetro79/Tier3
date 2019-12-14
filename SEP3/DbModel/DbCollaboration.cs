@@ -10,7 +10,7 @@ namespace SEP3.DbModel
     public class DbCollaboration
     {
         [Key]
-        public string CollaborationId { get; set; }
+        public string ProjectId { get; set; }
         public string CollaborationName { get; set; }
         public string ITProviderName { get; set; }
         public string Description { get; set; }
@@ -20,7 +20,7 @@ namespace SEP3.DbModel
         public void ToDbCollaboration(Collaboration collaboration)
         {
             CollaborationName = collaboration.CollaborationName;
-            CollaborationId = collaboration.CollaborationId;
+            ProjectId = collaboration.ProjectId;
             Description = collaboration.Description;
             Category = collaboration.Category;
             ITProviderName = collaboration.ITProvider.Username;
@@ -28,12 +28,12 @@ namespace SEP3.DbModel
 
         public Collaboration ToCollaboration(ITProvider iTProvider)
         {
-            return new Collaboration(CollaborationId, iTProvider, CollaborationName, Description, Category);
+            return new Collaboration(ProjectId, iTProvider, CollaborationName, Description, Category);
         }
 
         internal Collaboration toCollaboration(ITProvider itp)
         {
-            return new Collaboration(CollaborationId, itp, CollaborationName, Description, Category);
+            return new Collaboration(ProjectId, itp, CollaborationName, Description, Category);
         }
     }
 }
