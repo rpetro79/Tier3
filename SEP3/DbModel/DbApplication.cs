@@ -11,7 +11,7 @@ namespace SEP3.DbModel
     {
         [Key]
         public int Id { get; set; }
-        public string ProjectId { get; set; }
+        public string ProposalId { get; set; }
         public string ITproviderUsername { get; set; }
         public string ApplicationText { get; set; }
         public string  Date { get; set; }
@@ -21,12 +21,12 @@ namespace SEP3.DbModel
 
         public Application toApplication(ITProvider provider)
         {
-            return new Application(ProjectId, provider, ApplicationText, Date, Answer);
+            return new Application(ProposalId, provider, ApplicationText, Date, Answer);
         }
 
         public void toDbApplication(Application app)
         {
-            this.ProjectId = app.ProjectId;
+            this.ProposalId = app.ProjectId;
             this.ITproviderUsername = app.Provider.Username;
             this.ApplicationText = app.ApplicationText;
             this.Date = app.Date;

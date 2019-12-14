@@ -61,7 +61,7 @@ namespace SEP3.DbManagement
             List<DbCollaboration> collaborations = _context.Collaborations.Where(c => c.ITProviderName == collab.ITProvider.Username).ToList<DbCollaboration>();
             if(collaborations.Count == 0)
             {
-                collab.ProjectId = collab.ITProvider.Username + 1;
+                collab.CollaborationId = collab.ITProvider.Username + 1;
             }
             else 
             {
@@ -70,11 +70,11 @@ namespace SEP3.DbManagement
                 int max = 1;
                 foreach(DbCollaboration dbclb in collaborations)
                 {
-                    number = Int32.Parse(dbclb.ProjectId.Substring(n));
+                    number = Int32.Parse(dbclb.CollaborationId.Substring(n));
                     if (max < number)
                         max = number;
                 }
-                collab.ProjectId = collab.ITProvider.Username + (max + 1);
+                collab.CollaborationId = collab.ITProvider.Username + (max + 1);
             }
 
             DbCollaboration dbCollaboration = new DbCollaboration();
@@ -94,7 +94,7 @@ namespace SEP3.DbManagement
         //Put an already existing collaboration
         public async static Task<bool> PutCollaborationAsync(Collaboration collaboration, UserContext _context)
         {
-            DbCollaboration dbcollab= _context.Collaborations.Find(collaboration.ProjectId);
+            DbCollaboration dbcollab= _context.Collaborations.Find(collaboration.CollaborationId);
             if (dbcollab == null)
                 return false;
 
