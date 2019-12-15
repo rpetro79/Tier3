@@ -31,7 +31,7 @@ namespace SEP3.Controllers
         }
 
         // GET: api/DbITProviders/5
-        [HttpGet("user/{username}")]
+        [HttpGet("{username}")]
         public async Task<ActionResult<ITProvider>> GetITProvider(string username)
         {
             var provider = await ITProviderDb.getITProviderAsync(username, _context);
@@ -44,7 +44,7 @@ namespace SEP3.Controllers
             return provider;
         }
 
-        [HttpGet("{collaborationId}")]
+        /*[HttpGet("{collaborationId}")]
         public async Task<ActionResult<ITProvider>> GetITProviderByCollaboration(string collaborationId)
         {
             var provider = await ITProviderDb.getITProviderFromCollaborationAsync(collaborationId, _context);
@@ -55,7 +55,7 @@ namespace SEP3.Controllers
             }
 
             return provider;
-        }
+        }*/
 
         // PUT: api/DbITProviders/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -82,12 +82,12 @@ namespace SEP3.Controllers
             return Conflict();
         }*/
 
-        // DELETE: api/DbITProviders/5
+        /*// DELETE: api/DbITProviders/5
         [HttpDelete("{username}")]
         public async Task<ActionResult<DbITProvider>> DeleteDbITProvider(string username)
         {
             await ITProviderDb.deleteITProviderAsync(username, _context);
             return Ok();
-        }
+        }*/
     }
 }

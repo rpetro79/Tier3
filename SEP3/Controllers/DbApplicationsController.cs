@@ -24,7 +24,7 @@ namespace SEP3.Controllers
         }
 
         // GET: api/DbApplications/5
-        [HttpGet("{projectId}")]
+        /*[HttpGet("{projectId}")]
         public async Task<ActionResult<IEnumerable<Application>>> GetApplicationsForProject(string projectId)
         {
             var applications = await ApplicationsDb.getApplicationsForProjectAsync(projectId, _context);
@@ -35,7 +35,7 @@ namespace SEP3.Controllers
             }
 
             return applications;
-        }
+        }*/
 
         // PUT: api/DbApplications/5
         [HttpPut]
@@ -59,13 +59,13 @@ namespace SEP3.Controllers
             return Conflict();
         }
 
-        // DELETE: api/DbApplications/5
+        /*// DELETE: api/DbApplications/5
         [HttpDelete("{projectId}/{providerUsername}")]
         public async Task<ActionResult<DbApplication>> DeleteDbApplication(string projectId, string providerUsername)
         {
             await ApplicationsDb.deleteApplication(projectId, providerUsername, _context);
             return Ok();
-        }
+        }*/
 
         private bool DbApplicationExists(int id)
         {

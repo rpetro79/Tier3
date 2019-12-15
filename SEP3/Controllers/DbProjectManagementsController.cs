@@ -24,7 +24,7 @@ namespace SEP3.Controllers
         }
 
         // GET: api/DbProjectManagements
-        [HttpGet("{username}/{projectId}")]
+        [HttpGet("{projectId}")]
         public async Task<ActionResult<ProjectManagement>> GetProjectManagement(string projectId, string username)
         {
             var projectManagement = await ProjectManagementDb.getProjectManagementAsync(projectId, _context);
@@ -34,7 +34,7 @@ namespace SEP3.Controllers
         }
 
         // GET: api/DbProjectManagements/5
-        [HttpGet("{username}")]
+        [HttpGet("user/{username}")]
         public async Task<ActionResult<List<ProjectManagement>>> GetProjectManagementOfUser(string username)
         {
             var projectsManagement = await ProjectManagementDb.getProjectsManagementOfUserAsync(username, _context);
@@ -47,7 +47,7 @@ namespace SEP3.Controllers
             return projectsManagement;
         }
 
-        [HttpGet("id/{projectId}")]
+        /*[HttpGet("id/{projectId}")]
         public async Task<ActionResult<ProjectManagement>> GetProjectManagementById(string projectId)
         {
             //ProjectManagement projectManagement = await ProjectManagementDb.getProjectsManagementAsync(projectId, _context);
@@ -62,9 +62,9 @@ namespace SEP3.Controllers
             if (projectManagement == null)
                 return NotFound();
             return projectManagement;
-        }
+        }*/
 
-        [HttpGet("isClosed/{projectId}")]
+        /*[HttpGet("isClosed/{projectId}")]
         public async Task<ActionResult<bool>> GetProjectIsClosed(string projectId)
         {
 
@@ -72,7 +72,7 @@ namespace SEP3.Controllers
             if (projectManagement == null)
                 return NotFound();
             return projectManagement.Closed;
-        }
+        }*/
 
         // PUT: api/DbProjectManagements/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

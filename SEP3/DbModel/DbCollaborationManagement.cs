@@ -13,6 +13,9 @@ namespace SEP3.DbModel
         public string ProjectId { get; set; }
         public bool Closed { get; set; }
 
+        public DbCollaborationManagement()
+        { }
+
         public CollaborationManagement toCollaborationManagement(Collaboration collaboration, List<ITProvider> providers, List<Application> apps)
         {
             return new CollaborationManagement(collaboration, Closed, providers,apps);

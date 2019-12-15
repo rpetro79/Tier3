@@ -44,27 +44,35 @@ namespace SEP3.DbManagement
 
         public static bool putApplication(Application application, UserContext _context)
         {
-            List<DbApplication> dbApps = _context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProjectId == application.ProjectId).ToList<DbApplication>();
-            if (dbApps == null || dbApps.Count == 0)
-                return false;
-            
-            dbApps[0].toDbApplication(application);
-
-            _context.Entry(dbApps[0]).State = EntityState.Modified;
-            if (application.Answer.Equals("APPROVED"))
-            {
-                DbITProvidersAssigned toAdd = new DbITProvidersAssigned(application.Provider.Username, application.ProjectId);
-                _context.ITProvidersAssigned.Add(toAdd);
-            }
             try
             {
-                _context.SaveChanges();
+                List<DbApplication> dbApps = _context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProjectId == application.ProjectId).ToList<DbApplication>();
+                if (dbApps == null || dbApps.Count == 0)
+                    return false;
+            
+                dbApps[0].toDbApplication(application);
+
+                _context.Entry(dbApps[0]).State = EntityState.Modified;
+                /*if (application.Answer.Equals("APPROVED"))
+                {
+                    DbITProvidersAssigned toAdd = new DbITProvidersAssigned(application.Provider.Username, application.ProjectId);
+                    _context.ITProvidersAssigned.Add(toAdd);
+                }*/
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateException)
+                {
+                    return false;
+                }
+                return true;
             }
-            catch (DbUpdateException)
+            catch (Exception)
             {
                 return false;
             }
-            return true;
+            
         }
 
         public static bool postApplication(Application application, UserContext _context)

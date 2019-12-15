@@ -54,13 +54,9 @@ namespace SEP3.DbManagement
                 return false;
             cr.toDbCustomerCredentials(credentials);
 
-            bool x = await putCustomerAsync(credentials.Customer, _context);
+            /*bool x = await putCustomerAsync(credentials.Customer, _context);
             if (x == false)
-                return false;
-
-            x = await ContactInfoDb.putContactInfoAsync(credentials.Customer.ContactInfo, credentials.Customer.Username, _context);
-            if (x == false)
-                return false;
+                return false;*/
 
             _context.Entry(cr).State = EntityState.Modified;
 

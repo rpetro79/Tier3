@@ -50,10 +50,15 @@ namespace SEP3.DbManagement
                 return false;
             c.toDbCollaborationManagement(cm);
             _context.Entry(c).State = EntityState.Modified;
-            bool x = await CollaborationDb.PutCollaborationAsync(cm.Collaboration, _context);
+            /*bool x = await CollaborationDb.PutCollaborationAsync(cm.Collaboration, _context);
             if (!x)
-                return false;
-            x = ApplicationsDb.putApplications(cm.Applications, _context);
+                return false;*/
+            bool x = ApplicationsDb.putApplications(cm.Applications, _context);
+            foreach(Application a in cm.Applications)
+            {
+                if (a.Answer.Equals("APPROVED"))
+                    cm.AssignedProviders.Add(a.Provider);
+            }
             if (!x)
                 return false;
             x = ProvidersAssignedDb.putProvidersAssigned(cm.Collaboration.ProjectId, cm.AssignedProviders, _context);
@@ -98,9 +103,9 @@ namespace SEP3.DbManagement
         public async static Task deleteCollaborationManagement(string projectId, UserContext _context)
         {
             var collaborationM = await _context.CollaborationManagement.FindAsync(projectId);
-            await CollaborationDb.DeleteCollaborationFromITProvider(projectId, _context);
+            await CollaborationDb.DeleteCollaboration(projectId, _context);
+            await ApplicationsDb.deleteApplicationsOnProject(projectId, _context);
             await ProvidersAssignedDb.deleteProvidersAssignedToProject(projectId, _context);
-
             if (collaborationM == null)
             {
                 return;
@@ -112,12 +117,17 @@ namespace SEP3.DbManagement
 
         public async static Task deleteAllCollaborationsFromITProvider(string username, UserContext _context)
         {
-            var collaborationMs = _context.CollaborationManagement.Where(c => c.ProjectId.Substring(0, username.Length) == username).ToList();
-
-            foreach (DbCollaborationManagement cm in collaborationMs)
+            try
             {
-                await deleteCollaborationManagement(cm.ProjectId, _context);
+                var collaborationMs = _context.CollaborationManagement.Where(c => c.ProjectId.Substring(0, username.Length) == username).ToList();
+                foreach (DbCollaborationManagement cm in collaborationMs)
+                {
+                    await deleteCollaborationManagement(cm.ProjectId, _context);
+                }
             }
+            catch (Exception)
+            { return; }
+            
         }
     }
 }

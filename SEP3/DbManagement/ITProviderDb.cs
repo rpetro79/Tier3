@@ -132,6 +132,7 @@ namespace SEP3.DbManagement
 
             await ApplicationsDb.deleteApplicationsOfProvider(username, _context);
             ProvidersAssignedDb.deleteProvider(username, _context);
+            await CollaborationManagementDb.deleteAllCollaborationsFromITProvider(username, _context);
 
             DbITProvider prov = _context.ITProviders.Find(username);
             _context.ITProviders.Remove(prov);
@@ -195,9 +196,9 @@ namespace SEP3.DbManagement
             DbCredentials dbCredentials = new DbCredentials();
             dbCredentials.toDbITProviderCredentials(credentials);
 
-            bool x = await putITProviderAsync(credentials.Provider, _context);
+           /* bool x = await putITProviderAsync(credentials.Provider, _context);
             if (x == false)
-                return false;
+                return false;*/
 
             _context.Entry(dbCredentials).State = EntityState.Modified;
 

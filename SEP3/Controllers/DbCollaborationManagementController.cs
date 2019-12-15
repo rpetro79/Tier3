@@ -25,7 +25,7 @@ namespace SEP3.Controllers
             }
 
             // GET: api/DbCollaborationManagement
-            [HttpGet("{username}/{projectId}")]
+            [HttpGet("{projectId}")]
             public async Task<ActionResult<CollaborationManagement>> GetCollaborationManagement(string projectId, string username)
             {
                 var collaborationManagement = await CollaborationManagementDb.getCollaborationManagementAsync(projectId, _context);
@@ -35,7 +35,7 @@ namespace SEP3.Controllers
             }
 
             // GET: api/DbCollaborationManagement/5
-            [HttpGet("{username}")]
+            [HttpGet("user/{username}")]
             public async Task<ActionResult<List<CollaborationManagement>>> GetCollaborationManagementOfUser(string username)
             {
                 var collaborationsManagement = await CollaborationManagementDb.getCollaborationManagementOfUserAsync(username, _context);
@@ -48,7 +48,7 @@ namespace SEP3.Controllers
                 return collaborationsManagement;
             }
 
-            [HttpGet("id/{projectId}")]
+           /* [HttpGet("id/{projectId}")]
             public async Task<ActionResult<CollaborationManagement>> GetCollaborationManagementById(string projectId)
             {
                 
@@ -56,7 +56,7 @@ namespace SEP3.Controllers
                 if (projectCollaboration == null)
                     return NotFound();
                 return projectCollaboration;
-            }
+            }*/
 
             // PUT: api/DbCollaborationManagement/5
             // To protect from overposting attacks, please enable the specific properties you want to bind to, for

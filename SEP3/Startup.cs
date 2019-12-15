@@ -15,6 +15,7 @@ using SEP3.DbContexts;
 using SEP3.SwaggerConfig;
 using Swashbuckle.AspNetCore.Swagger;
 using SwaggerOptions = SEP3.SwaggerConfig.SwaggerOptions;
+using Microsoft.AspNetCore.Http;
 
 namespace SEP3
 {
@@ -38,6 +39,11 @@ namespace SEP3
                 {
                     x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo());
                 });
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 5001;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +67,7 @@ namespace SEP3
                 option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
             });
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

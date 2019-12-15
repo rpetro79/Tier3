@@ -63,10 +63,10 @@ namespace SEP3.DbManagement
                 return false;
             p.toDbProjectManagement(pm);
             _context.Entry(p).State = EntityState.Modified;
-            bool x = await ProjectDb.putProjectAsync(pm.project, _context);
+            /*bool x = await ProjectDb.putProjectAsync(pm.project, _context);
             if (!x)
-                return false;
-            x = ApplicationsDb.putApplications(pm.Applications, _context);
+                return false;*/
+            bool x = ApplicationsDb.putApplications(pm.Applications, _context);
             if (!x)
                 return false;
             x = ProvidersAssignedDb.putProvidersAssigned(pm.project.ProjectId, pm.AssignedProviders, _context);

@@ -85,12 +85,12 @@ namespace SEP3.Controllers
             
         }*/
 
-        // DELETE: api/DbCustomers/5
+        /*// DELETE: api/DbCustomers/5
         [HttpDelete("{username}")]
         public async Task<ActionResult<DbCustomer>> DeleteCustomer(string username)
         {
             await CustomerDb.deleteCustomerAsync(username, _context);
             return Ok();
-        }
+        }*/
     }
 }

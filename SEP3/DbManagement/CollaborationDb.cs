@@ -25,17 +25,17 @@ namespace SEP3.DbManagement
             return collaborations;
         }
 
-        public async static Task<List<Collaboration>> getAllCollaborationsAsync(UserContext _context)
+        public async static Task<List<Collaboration>> getCollaborationsOfUserAsync(string username, UserContext _context)
         {
-            List<DbCollaboration> collaborations= _context.Collaborations.ToList<DbCollaboration>();
-            List<Collaboration> cs = new List<Collaboration>();
+            List<DbCollaboration> DBcollaborations = _context.Collaborations.Where(col => col.ITProviderName == username).ToList<DbCollaboration>();
+            List<Collaboration> collaborations = new List<Collaboration>();
             ITProvider itp;
-            foreach (DbCollaboration c in collaborations)
+            foreach (DbCollaboration dbc in DBcollaborations)
             {
-                itp = await ITProviderDb.getITProviderAsync(c.ITProviderName, _context);
-                cs.Add(c.toCollaboration(itp));
+                itp = await ITProviderDb.getITProviderAsync(dbc.ITProviderName, _context);
+                collaborations.Add(dbc.ToCollaboration(itp));
             }
-            return cs;
+            return collaborations;
         }
 
         //Get collaboration by id
@@ -114,11 +114,12 @@ namespace SEP3.DbManagement
         }
 
         //Delete a collaboration from an It provider
-        public async static Task<bool> DeleteCollaborationFromITProvider(string CollaborationId, UserContext _context)
+        public async static Task<bool> DeleteCollaboration(string CollaborationId, UserContext _context)
         {
             var collaboration = await _context.Collaborations.FindAsync(CollaborationId);
             if (collaboration == null)
                 return false;
+
 
             _context.Collaborations.Remove(collaboration);
             await _context.SaveChangesAsync();
@@ -135,19 +136,5 @@ namespace SEP3.DbManagement
                 _context.SaveChanges();
             }
         }
-
-        public async static Task<List<Collaboration>> getCollaborationsAsync(UserContext _context)
-        {
-            List<DbCollaboration> collaborations = _context.Collaborations.ToList<DbCollaboration>();
-            List<Collaboration> cs = new List<Collaboration>();
-            ITProvider itp;
-            foreach (DbCollaboration p in collaborations)
-            {
-               itp = await ITProviderDb.getITProviderAsync(p.ITProviderName, _context);
-                cs.Add(p.toCollaboration(itp));
-            }
-            return cs;
-        }
-
     }
 }

@@ -18,10 +18,10 @@ namespace SEP3.DbSeeder
 
             List<string> techs = new List<string>() { "Java", "C#", "C++", "Php" };
 
-            ITProviderCredentials user = new ITProviderCredentials("147258", new ITProvider("itralu", "Raluca-Elena Petrovici", "Find a flaw. I dare you.", 5.2, 10, techs, "individual", new ContactInfo("Kollegievaenget 5", "12345678", "279998@via.dk")));
-            ITProviderCredentials user2 = new ITProviderCredentials("258147", new ITProvider("itleksi", "Aleksandra Angelova Aleksandrova", "Everything is better with Christmas decorations!!", 5.1, 10, techs, "individual", new ContactInfo("Mollersgade 12", "12345678", "280015@via.dk")));
-            ITProviderCredentials user3 = new ITProviderCredentials("987654", new ITProvider("itkarla", "Karla Jajic", "Got my facts on point.", 5.2, 10, techs, "individual", new ContactInfo("Amaliegade 8", "12345678", "280066@via.dk")));
-            ITProviderCredentials user4 = new ITProviderCredentials("321654", new ITProvider("itlena", "Lena Bojanowska", "A little party never killed anyone.", 5.3, 10, techs, "individual", new ContactInfo("Hybenvej 10", "12345678", "280069@via.dk")));
+            ITProviderCredentials user = new ITProviderCredentials("147258", new ITProvider("itralu", "Raluca-Elena Petrovici", "Find a flaw. I dare you.", 5, 10, techs, "individual", new ContactInfo("Kollegievaenget 5", "12345678", "279998@via.dk")));
+            ITProviderCredentials user2 = new ITProviderCredentials("258147", new ITProvider("itleksi", "Aleksandra Angelova Aleksandrova", "Everything is better with Christmas decorations!!", 5, 10, techs, "individual", new ContactInfo("Mollersgade 12", "12345678", "280015@via.dk")));
+            ITProviderCredentials user3 = new ITProviderCredentials("987654", new ITProvider("itkarla", "Karla Jajic", "Got my facts on point.", 5, 10, techs, "individual", new ContactInfo("Amaliegade 8", "12345678", "280066@via.dk")));
+            ITProviderCredentials user4 = new ITProviderCredentials("321654", new ITProvider("itlena", "Lena Bojanowska", "A little party never killed anyone.", 5, 10, techs, "individual", new ContactInfo("Hybenvej 10", "12345678", "280069@via.dk")));
 
             CustomerCredentials cust = new CustomerCredentials("123", new Customer()
             {
@@ -182,25 +182,40 @@ namespace SEP3.DbSeeder
 
             if (!context.Collaborations.Any())
             {
-                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itkarla2", CollaborationName = "DataBase person needed", Category = "System", Description = "Need help to create database on a project", ITProviderName = "itkarla" });
-                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itralu2", CollaborationName = "Design person needed", Category = "Website", Description = "Need help to create design for a website on a project", ITProviderName = "itralu" });
+                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itkarla1", CollaborationName = "DataBase person needed", Category = "System", Description = "Need help to create database on a project", ITProviderName = "itkarla" });
+                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itralu1", CollaborationName = "Design person needed", Category = "Website", Description = "Need help to create design for a website on a project", ITProviderName = "itralu" });
+                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itlena1", CollaborationName = "Design person needed", Category = "Website", Description = "Need help to create design for a website on a project", ITProviderName = "itlena" });
+                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itleksi1", CollaborationName = "Database person needed", Category = "Website", Description = "Need help to create a database for a web application", ITProviderName = "itleksi" });
                 context.SaveChanges();
             }
             if (!context.CollaborationManagement.Any())
             {
-                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "itkarla2", Closed = false }); ;
-                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "itralu2", Closed = false});
+                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "itkarla1", Closed = false }); ;
+                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "itralu1", Closed = false});
+                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "itlena1", Closed = false});
+                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "ileksi1", Closed = false});
                 context.SaveChanges();
             }
             if (!context.Applications.Any())
             {
-                context.Applications.Add(new DbApplication() { Id = 1, ProjectId = "itleksi1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itkarla", Date = "12/14/2019" });
-                context.Applications.Add(new DbApplication() { Id = 2, ProjectId = "itralu1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itralu", Date = "12/14/2019" });
-                context.Applications.Add(new DbApplication() { Id = 3, ProjectId = "itlena1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itkarla", Date = "12/14/2019" });
-                context.Applications.Add(new DbApplication() { Id = 4, ProjectId = "itlena1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itralu", Date = "12/14/2019" });
+                context.Applications.Add(new DbApplication() { ProjectId = "itleksi1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itkarla", Date = "12/14/2019" });
+                context.Applications.Add(new DbApplication() { ProjectId = "itralu1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itlena", Date = "12/14/2019" });
+                context.Applications.Add(new DbApplication() { ProjectId = "itlena1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itkarla", Date = "12/14/2019" });
+                context.Applications.Add(new DbApplication() { ProjectId = "itlena1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itralu", Date = "12/14/2019" });
                 context.SaveChanges();
             }
-
+            if (!context.ITProvidersAssigned.Any())
+            {
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "cleksi1", ProviderUsername = "itralu"});
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "cleksi1", ProviderUsername = "itlena"});
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "clena1", ProviderUsername = "itkarla"});
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "itkarla1", ProviderUsername = "itleksi"});
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "itralu1", ProviderUsername = "itleksi"});
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "itlena1", ProviderUsername = "itkarla"});
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "itleksi1", ProviderUsername = "itralu"});
+                context.ITProvidersAssigned.Add(new DbITProvidersAssigned() { ProjectId = "itralu1", ProviderUsername = "itkarla"});
+                context.SaveChanges();
+            }
 
 
             context.SaveChanges();

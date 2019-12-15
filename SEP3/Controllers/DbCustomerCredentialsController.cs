@@ -67,7 +67,7 @@ namespace SEP3.Controllers
             if (!i)
                 return Conflict();
             else 
-                return CreatedAtAction("GetDbCustomerCredentials", new { id = credentials.Customer.Username }, credentials);
+                return Accepted();
         }
 
         // DELETE: api/DbCustomerCredentials/5
