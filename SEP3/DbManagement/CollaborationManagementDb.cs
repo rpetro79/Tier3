@@ -53,10 +53,10 @@ namespace SEP3.DbManagement
             bool x = await CollaborationDb.PutCollaborationAsync(cm.Collaboration, _context);
             if (!x)
                 return false;
-            x = ApplicationsDb.putApplications(cm.ITProvidersApplications, _context);
+            x = ApplicationsDb.putApplications(cm.Applications, _context);
             if (!x)
                 return false;
-            x = ProvidersAssignedDb.putProvidersAssigned(cm.Collaboration.ProjectId, cm.ITProvidersOnCollaboration, _context);
+            x = ProvidersAssignedDb.putProvidersAssigned(cm.Collaboration.ProjectId, cm.AssignedProviders, _context);
             if (!x)
                 return false;
 

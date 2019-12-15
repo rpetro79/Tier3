@@ -70,7 +70,7 @@ namespace SEP3.DbManagement
                 int max = 1;
                 foreach(DbCollaboration dbclb in collaborations)
                 {
-                    number = Int32.Parse(dbclb.ProjectId.Substring(n));
+                    number = Int32.Parse(dbclb.CollaborationId.Substring(n));
                     if (max < number)
                         max = number;
                 }

@@ -89,7 +89,7 @@ namespace SEP3.Controllers
 
             return Ok();
         }
-
+   
         [HttpGet("customer/{customerUsername}")]
         public async Task<ActionResult<ProjectList>> GetAllProjectsByCustomerUsername(String customerUsername)
         {

@@ -16,57 +16,6 @@ namespace SEP3.DbSeeder
             context.Database.EnsureCreated();
             context.SaveChanges();
 
-
-
-            //foreach (var pr in context.Applications)
-            //{
-            //    context.Applications.Remove(pr);
-            //}
-
-            //foreach (var pr in context.ITProvidersAssigned)
-            //{
-            //    context.ITProvidersAssigned.Remove(pr);
-            //}
-
-            // foreach (var p in context.ProjectManagement)
-            //{
-            //    context.ProjectManagement.Remove(p);
-            //}
-
-            //foreach (var pr in context.Projects)
-            //{
-            //    context.Projects.Remove(pr);
-            //}
-
-            //foreach (var a in context.Collaborations)
-            //{
-
-            //  context.Collaborations.Remove(a);
-            //}
-            //foreach (var cred in context.credentials)
-            //{
-            //    context.credentials.Remove(cred);
-            //} foreach (var ci in context.contactInfo)
-            //{
-            //    context.contactInfo.Remove(ci);
-            //}
-
-            //foreach (var provider in context.ITProviders)
-            //{
-            //    context.ITProviders.Remove(provider);
-            //}
-            //foreach (var customer in context.customers)
-            //{
-            //    context.customers.Remove(customer);
-            //}
-
-
-
-
-
-
-
-
             List<string> techs = new List<string>() { "Java", "C#", "C++", "Php" };
 
             ITProviderCredentials user = new ITProviderCredentials("147258", new ITProvider("itralu", "Raluca-Elena Petrovici", "Find a flaw. I dare you.", 5.2, 10, techs, "individual", new ContactInfo("Kollegievaenget 5", "12345678", "279998@via.dk")));
@@ -215,42 +164,45 @@ namespace SEP3.DbSeeder
 
             if (!context.Projects.Any())
             {
-                context.Projects.Add(new DbProject() { ProjectId = "itleksi1", customerUsername = "cleksi", ProjectName = "Christmas application", Category = "Web Application", Description = "I am looking for IT provider who can develop a countdown application for me." });
-                context.Projects.Add(new DbProject() { ProjectId = "itralu1", customerUsername = "cralu", ProjectName = "Politics website", Category = "Website", Description = "I need a person who can help me with a political website" });
-                context.Projects.Add(new DbProject() { ProjectId = "itlena1", customerUsername = "clena", ProjectName = "Design system", Category = "System", Description = "I need a person who can help me with the design of a system" });
-                context.Projects.Add(new DbProject() { ProjectId = "itkarla1", customerUsername = "ckarla", ProjectName = "Database system", Category = "System", Description = "I need a person who can create database for a system" });
+                context.Projects.Add(new DbProject() { ProjectId = "cleksi1", customerUsername = "cleksi", ProjectName = "Christmas application", Category = "Web Application", Description = "I am looking for IT provider who can develop a countdown application for me." });
+                context.Projects.Add(new DbProject() { ProjectId = "cralu1", customerUsername = "cralu", ProjectName = "Politics website", Category = "Website", Description = "I need a person who can help me with a political website" });
+                context.Projects.Add(new DbProject() { ProjectId = "clena1", customerUsername = "clena", ProjectName = "Design system", Category = "System", Description = "I need a person who can help me with the design of a system" });
+                context.Projects.Add(new DbProject() { ProjectId = "ckarla1", customerUsername = "ckarla", ProjectName = "Database system", Category = "System", Description = "I need a person who can create database for a system" });
                 context.SaveChanges();
             }
 
             if (!context.ProjectManagement.Any())
             {
-                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "itleksi1", Closed = false });
-                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "itralu1", Closed = false });
-                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "itlena1", Closed = false });
-                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "itkarla1", Closed = false });
+                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "cleksi1", Closed = false });
+                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "cralu1", Closed = false });
+                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "clena1", Closed = false });
+                context.ProjectManagement.Add(new DbProjectManagement() { ProjectId = "ckarla1", Closed = false });
                 context.SaveChanges();
             }
 
             if (!context.Collaborations.Any())
             {
-                context.Applications.Add(new DbApplication() { Id = 1, ProjectId = "leski371", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "karla7", Date = DateTime.Now.ToString() });
-                context.Applications.Add(new DbApplication() { Id = 2, ProjectId = "leski371", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "ralu79", Date = DateTime.Now.ToString() });
-                context.Applications.Add(new DbApplication() { Id = 3, ProjectId = "lena131", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "karla7", Date = DateTime.Now.ToString() });
-                context.Applications.Add(new DbApplication() { Id = 4, ProjectId = "lena131", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "ralu79", Date = DateTime.Now.ToString() });
+                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itkarla2", CollaborationName = "DataBase person needed", Category = "System", Description = "Need help to create database on a project", ITProviderName = "itkarla" });
+                context.Collaborations.Add(new DbCollaboration() { CollaborationId = "itralu2", CollaborationName = "Design person needed", Category = "Website", Description = "Need help to create design for a website on a project", ITProviderName = "itralu" });
+                context.SaveChanges();
             }
-
+            if (!context.CollaborationManagement.Any())
+            {
+                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "itkarla2", Closed = false }); ;
+                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "itralu2", Closed = false});
+                context.SaveChanges();
+            }
             if (!context.Applications.Any())
             {
-                context.Collaborations.Add(new DbCollaboration() { ProjectId = "karla71", CollaborationName = "DataBase person needed", Category = "System", Description = "Need help to create database on a project", ITProviderName = "karla7" });
-                context.Collaborations.Add(new DbCollaboration() { ProjectId = "ralu791", CollaborationName = "Design person needed", Category = "Website", Description = "Need help to create design for a website on a project", ITProviderName = "ralu79" });
+                context.Applications.Add(new DbApplication() { Id = 1, ProjectId = "itleksi1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itkarla", Date = "12/14/2019" });
+                context.Applications.Add(new DbApplication() { Id = 2, ProjectId = "itralu1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itralu", Date = "12/14/2019" });
+                context.Applications.Add(new DbApplication() { Id = 3, ProjectId = "itlena1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itkarla", Date = "12/14/2019" });
+                context.Applications.Add(new DbApplication() { Id = 4, ProjectId = "itlena1", Answer = "NOT_ANSWERED", ApplicationText = "I would like to apply", ITproviderUsername = "itralu", Date = "12/14/2019" });
+                context.SaveChanges();
             }
 
-            if (!context.ProjectManagement.Any())
-            {
-                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "karla71", Closed = false });
-                context.CollaborationManagement.Add(new DbCollaborationManagement() { ProjectId = "ralu121", Closed = false });
-               
-            }
+
+
             context.SaveChanges();
         }
     }

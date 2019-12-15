@@ -64,6 +64,16 @@ namespace SEP3.Controllers
             return projectManagement;
         }
 
+        [HttpGet("isClosed/{projectId}")]
+        public async Task<ActionResult<bool>> GetProjectIsClosed(string projectId)
+        {
+
+            var projectManagement = await ProjectManagementDb.getProjectManagementAsync(projectId, _context);
+            if (projectManagement == null)
+                return NotFound();
+            return projectManagement.Closed;
+        }
+
         // PUT: api/DbProjectManagements/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

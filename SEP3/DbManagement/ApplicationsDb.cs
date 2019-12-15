@@ -16,6 +16,8 @@ namespace SEP3.DbManagement
 
         public async static Task<List<Application>> getApplicationsForProjectAsync(string projectId, UserContext _context)
         {
+            if (!_context.Applications.Any())
+                return new List<Application>();
             List<DbApplication> applications = _context.Applications.Where(app => app.ProjectId == projectId && app.Answer.Equals("NOT_ANSWERED")).ToList<DbApplication>();
             if (applications == null)
                 return new List<Application>();

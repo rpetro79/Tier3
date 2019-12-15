@@ -37,7 +37,7 @@ namespace SEP3.Migrations
                     b.Property<string>("ITproviderUsername")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProposalId")
+                    b.Property<string>("ProjectId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -75,6 +75,19 @@ namespace SEP3.Migrations
                     b.HasKey("CollaborationId");
 
                     b.ToTable("Collaborations");
+                });
+
+            modelBuilder.Entity("SEP3.DbModel.DbCollaborationManagement", b =>
+                {
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Closed")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ProjectId");
+
+                    b.ToTable("CollaborationManagement");
                 });
 
             modelBuilder.Entity("SEP3.DbModel.DbContactInfo", b =>

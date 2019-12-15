@@ -43,7 +43,19 @@ namespace SEP3.Controllers
 
             return customer;
         }
+        // GET: api/DbCustomers/5
+        [HttpGet("projectId/{projectId}")]
+        public async Task<ActionResult<Customer>> GetDbCustomerByProjectId(string projectId)
+        {
+            var customer = await CustomerDb.getCustomerByIdAsync(projectId, _context);
 
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return customer;
+        }
         // PUT: api/DbCustomers/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

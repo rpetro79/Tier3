@@ -99,7 +99,18 @@ namespace SEP3.DbManagement
             }
             return true;
         }
+        public async static Task<ActionResult<Customer>> getCustomerByIdAsync(string projectId, UserContext _context)
+        {
+            DbProject dbProject = await _context.Projects.FindAsync(projectId);
+            String customerUsrename = dbProject.customerUsername;
+            DbCustomer customer = await _context.customers.FindAsync(customerUsrename);
+            if (customer == null)
+                return null;
 
+            ContactInfo ci = await ContactInfoDb.getContactInfoAsync(customerUsrename, _context);
+
+            return customer.toCustomer(ci);
+        }
         public async static Task deleteCredentialsAsync(string username, UserContext _context)
         {
             var dbCustomerCredentials = _context.credentials.Find(username);
