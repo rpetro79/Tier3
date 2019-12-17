@@ -19,6 +19,18 @@ namespace SEP3.DbManagement
             return await toCollaborationManagementAsync(collaborationManagement, _context);
         }
 
+        public static async Task<List<CollaborationManagement>> getCollaborationManagementsAsync(UserContext _context)
+        {
+            List<DbCollaborationManagement> list = await _context.CollaborationManagement.ToListAsync<DbCollaborationManagement>();
+            List<CollaborationManagement> returnList = new List<CollaborationManagement>();
+            foreach (DbCollaborationManagement c in list)
+            {
+                returnList.Add(await toCollaborationManagementAsync(c, _context));
+            }
+            return returnList;
+        }
+
+
         private async static Task<CollaborationManagement> toCollaborationManagementAsync(DbCollaborationManagement collaborationManagement, UserContext _context)
         {
             Collaboration collaboration = await CollaborationDb.GetCollaborationAsync(collaborationManagement.ProjectId, _context);

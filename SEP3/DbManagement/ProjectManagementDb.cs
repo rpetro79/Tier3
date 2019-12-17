@@ -20,6 +20,17 @@ namespace SEP3.DbManagement
             return await toProjectManagementAsync(projectManagement, _context);
         }
 
+        public async static Task<List<ProjectManagement>> getAllProjectManagementsAsync(UserContext _context)
+        {
+            List<DbProjectManagement> list = await _context.ProjectManagement.ToListAsync<DbProjectManagement>();
+            List<ProjectManagement> returnList = new List<ProjectManagement>();
+            foreach (DbProjectManagement m in list)
+            {
+                returnList.Add(await toProjectManagementAsync(m, _context));
+            }
+            return returnList;
+        }
+
         private async static Task<ProjectManagement> toProjectManagementAsync(DbProjectManagement projectManagement, UserContext _context)
         {
             Project project = await ProjectDb.getProjectAsync(projectManagement.ProjectId, _context);

@@ -14,16 +14,18 @@ namespace SEP3.DbManagement
         //Get all collaborations
         public async static Task<List<Collaboration>> GetCollaborationsAsync(UserContext _context)
         {
-            List<DbCollaboration> DBcollaborations = _context.Collaborations.ToList<DbCollaboration>();
+            List<CollaborationManagement> cm = await CollaborationManagementDb.getCollaborationManagementsAsync(_context);
             List<Collaboration> collaborations = new List<Collaboration>();
-            ITProvider itp;
-            foreach(DbCollaboration dbc in DBcollaborations)
+            foreach (CollaborationManagement c in cm)
             {
-                itp = await ITProviderDb.getITProviderAsync(dbc.ITProviderName, _context);
-                collaborations.Add(dbc.ToCollaboration(itp));
+                if (!c.Closed)
+                    collaborations.Add(c.Collaboration);
+
             }
             return collaborations;
         }
+
+
 
         public async static Task<List<Collaboration>> getCollaborationsOfUserAsync(string username, UserContext _context)
         {

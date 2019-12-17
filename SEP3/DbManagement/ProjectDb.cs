@@ -15,16 +15,16 @@ namespace SEP3.DbManagement
 
         public async static Task<List<Project>> getProjectsAsync(UserContext _context)
         {
-            List<DbProject> projects = _context.Projects.ToList<DbProject>();
-            List<Project> pr = new List<Project>();
-            Customer c;
-            foreach (DbProject p in projects)
+            List<ProjectManagement> list = await ProjectManagementDb.getAllProjectManagementsAsync(_context);
+            List<Project> projects = new List<Project>();
+            foreach (ProjectManagement p in list)
             {
-                c = await CustomerDb.getCustomerAsync(p.customerUsername, _context);
-                pr.Add(p.toProject(c));
+                if (!p.Closed)
+                    projects.Add(p.project);
             }
-            return pr;
+            return projects;
         }
+
 
         public async static Task<Project> getProjectAsync(string projectId, UserContext _context)
         {
