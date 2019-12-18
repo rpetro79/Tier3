@@ -78,8 +78,11 @@ namespace SEP3.DbManagement
             if (!x)
                 return false;*/
             bool x = ApplicationsDb.putApplications(pm.Applications, _context);
-            if (!x)
-                return false;
+            foreach (Application a in pm.Applications)
+            {
+                if (a.Answer.Equals("APPROVED"))
+                    pm.AssignedProviders.Add(a.Provider);
+            }
             x = ProvidersAssignedDb.putProvidersAssigned(pm.project.ProjectId, pm.AssignedProviders, _context);
             if (!x)
                 return false;
