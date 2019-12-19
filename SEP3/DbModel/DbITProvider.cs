@@ -17,7 +17,7 @@ namespace SEP3.DbModel
         public int NoOfReviews { get; set; }
         public string Type { get; set; }
 
-        public List<DbTechnologies> toDbITProvider(ITProvider p)
+        public List<DbTechnologies> ToDbITProvider(ITProvider p)
         {
             this.Username = p.Username;
             this.Name = p.Name;
@@ -30,13 +30,13 @@ namespace SEP3.DbModel
             for(int i = 0; i < p.Technologies.Count; ++i)
             {
                 DbTechnologies t = new DbTechnologies();
-                t.toDbTechnology(Username, p.Technologies.ElementAt(i));
+                t.ToDbTechnology(Username, p.Technologies.ElementAt(i));
                 techs.Add(t);
             }
             return techs;
         }
 
-        public ITProvider toITProvider(ContactInfo ci, List<string> techs)
+        public ITProvider ToITProvider(ContactInfo ci, List<string> techs)
         {
             return new ITProvider(Username, Name, Description, Review, NoOfReviews, techs, Type, ci);
         }

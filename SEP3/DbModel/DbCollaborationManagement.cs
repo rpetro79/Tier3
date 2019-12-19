@@ -16,12 +16,12 @@ namespace SEP3.DbModel
         public DbCollaborationManagement()
         { }
 
-        public CollaborationManagement toCollaborationManagement(Collaboration collaboration, List<ITProvider> providers, List<Application> apps)
+        public CollaborationManagement ToCollaborationManagement(Collaboration collaboration, List<ITProvider> providers, List<Application> apps)
         {
             return new CollaborationManagement(collaboration, Closed, providers,apps);
         }
 
-        public void toDbCollaborationManagement(CollaborationManagement cm)
+        public void ToDbCollaborationManagement(CollaborationManagement cm)
         {
             this.ProjectId = cm.Collaboration.ProjectId;
             this.Closed = cm.Closed;

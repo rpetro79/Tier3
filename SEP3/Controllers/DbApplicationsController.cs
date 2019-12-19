@@ -23,20 +23,6 @@ namespace SEP3.Controllers
             _context = context;
         }
 
-        // GET: api/DbApplications/5
-        /*[HttpGet("{projectId}")]
-        public async Task<ActionResult<IEnumerable<Application>>> GetApplicationsForProject(string projectId)
-        {
-            var applications = await ApplicationsDb.getApplicationsForProjectAsync(projectId, _context);
-
-            if (applications == null)
-            {
-                return NotFound();
-            }
-
-            return applications;
-        }*/
-
         // PUT: api/DbApplications/5
         [HttpPut]
         public async Task<IActionResult> PutDbApplication(Application application)
@@ -57,19 +43,6 @@ namespace SEP3.Controllers
             if (x)
                 return Accepted();
             return Conflict();
-        }
-
-        /*// DELETE: api/DbApplications/5
-        [HttpDelete("{projectId}/{providerUsername}")]
-        public async Task<ActionResult<DbApplication>> DeleteDbApplication(string projectId, string providerUsername)
-        {
-            await ApplicationsDb.deleteApplication(projectId, providerUsername, _context);
-            return Ok();
-        }*/
-
-        private bool DbApplicationExists(int id)
-        {
-            return _context.Applications.Any(e => e.Id == id);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SEP3.DbModel
         public string Description { get; set; }
         public string Category { get; set; }
 
-        public void toDbProject(Project project)
+        public void ToDbProject(Project project)
         {
             ProjectId = project.ProjectId;
             customerUsername = project.customer.Username;
@@ -25,7 +25,7 @@ namespace SEP3.DbModel
             Category = project.Category;
         }
 
-        public Project toProject(Customer cust)
+        public Project ToProject(Customer cust)
         {
             return new Project(ProjectId, cust, ProjectName, Description, Category);
         }

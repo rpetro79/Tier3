@@ -39,7 +39,7 @@ namespace SEP3.DbManagement
 
             List<ITProvider> providers = await ProvidersAssignedDb.getProvidersAssigned(projectManagement.ProjectId, _context);
 
-            ProjectManagement pm = projectManagement.toProjectManagement(project, apps, providers);
+            ProjectManagement pm = projectManagement.ToProjectManagement(project, apps, providers);
             return pm;
         }
 
@@ -55,30 +55,16 @@ namespace SEP3.DbManagement
             return pms;
         }
 
-        //public async static Task<ProjectManagement> getProjectsManagementByIdAsync(string id, UserContext _context)
-        //{
-        //    List<DbProjectManagement> projectManagement = await _context.ProjectManagement.Where(pm => pm.ProjectId == id).ToListAsync<DbProjectManagement>();
-        //    ProjectManagement pms = new ProjectManagement();
-        //    foreach (DbProjectManagement pm in projectManagement)
-        //    {
-        //        pms = await toProjectManagementAsync(pm, _context);
-        //    }
-
-        //    return pms;
-        //}
-
         public async static Task<bool> putProjectManagementAsync(ProjectManagement pm, UserContext _context)
         {
             DbProjectManagement p = _context.ProjectManagement.Find(pm.project.ProjectId);
             if (p == null)
                 return false;
-            p.toDbProjectManagement(pm);
+            p.ToDbProjectManagement(pm);
             _context.Entry(p).State = EntityState.Modified;
-            /*bool x = await ProjectDb.putProjectAsync(pm.project, _context);
-            if (!x)
-                return false;*/
+            
             bool x = ApplicationsDb.putApplications(pm.Applications, _context);
-            foreach (Application a in pm.Applications)
+             foreach (Application a in pm.Applications)
             {
                 if (a.Answer.Equals("APPROVED"))
                     pm.AssignedProviders.Add(a.Provider);
@@ -107,17 +93,7 @@ namespace SEP3.DbManagement
             if (!x)
                 return false;
             p = new DbProjectManagement();
-            p.toDbProjectManagement(pm);
-
-           /* if(pm.Applications != null)
-            {
-                foreach(Application app in pm.Applications)
-                {
-                    x = ApplicationsDb.postApplication(app, _context);
-                    if (x == false)
-                        return false;
-                }
-            }*/
+            p.ToDbProjectManagement(pm);
 
             _context.ProjectManagement.Add(p);
 

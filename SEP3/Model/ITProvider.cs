@@ -58,31 +58,5 @@ namespace SEP3.Model
             this.NoOfReviews = noOfReviews;
             this.Type = type;
         }
-
-        public void addTechnology(string technology)
-        {
-            Technologies.Add(technology);
-        }
-
-        public void removeTechnology(string technology)
-        {
-            Technologies.Remove(technology);
-        }
-
-        public void replaceTechnologies(List<string> techs)
-        {
-            Technologies = techs;
-        }
-
-        public void reviewReceived(int newReview)
-        {
-            if (NoOfReviews == 0)
-                Review = newReview;
-            else
-            {
-                Review = (Review * NoOfReviews + newReview) / (NoOfReviews+1);
-            }
-            NoOfReviews++;                
-        }
     }
 }

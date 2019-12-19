@@ -57,8 +57,6 @@ namespace SEP3.Controllers
             return customer;
         }
         // PUT: api/DbCustomers/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
         public async Task<IActionResult> PutCustomer(Customer customer)
         {
@@ -68,29 +66,5 @@ namespace SEP3.Controllers
                 return Accepted();
             return NotFound();
         }
-
-/*        you should only be able to post credentials
- *        
- *        // POST: api/DbCustomers
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<DbCustomer>> PostDbCustomer(Customer customer)
-        {
-            bool x = await CustomerDb.postCustomerAsync(customer, _context);
-
-            if (x)
-                return Accepted();
-            return Conflict();
-            
-        }*/
-
-        /*// DELETE: api/DbCustomers/5
-        [HttpDelete("{username}")]
-        public async Task<ActionResult<DbCustomer>> DeleteCustomer(string username)
-        {
-            await CustomerDb.deleteCustomerAsync(username, _context);
-            return Ok();
-        }*/
     }
 }

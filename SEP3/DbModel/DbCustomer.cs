@@ -14,14 +14,14 @@ namespace SEP3.DbModel
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public void toDbCustomer(Customer c)
+        public void ToDbCustomer(Customer c)
         {
             this.Username = c.Username;
             this.Name = c.Name;
             this.Description = c.Description;
         }
 
-        public Customer toCustomer(ContactInfo ci)
+        public Customer ToCustomer(ContactInfo ci)
         {
             return new Customer(Username, Name, Description, ci);
         }

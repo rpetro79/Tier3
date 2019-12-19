@@ -16,14 +16,14 @@ namespace SEP3.DbManagement
             DbContactInfo dbci = await _context.contactInfo.FindAsync(username);
             if (dbci == null)
                 return null;
-            ContactInfo ci = dbci.toContactInfo();
+            ContactInfo ci = dbci.ToContactInfo();
             return ci;
         }
 
         public async static Task<bool> putContactInfoAsync(ContactInfo contactInfo, string username, UserContext _context)
         {
             DbContactInfo ci = _context.contactInfo.Find(username);
-            ci.toDbContactInfo(contactInfo, username);
+            ci.ToDbContactInfo(contactInfo, username);
 
             _context.Entry(ci).State = EntityState.Modified;
 
@@ -42,7 +42,7 @@ namespace SEP3.DbManagement
         public async static Task<bool> postContactInfoAsync(ContactInfo contactInfo, string username, UserContext _context)
         {
             DbContactInfo ci = new DbContactInfo();
-            ci.toDbContactInfo(contactInfo, username);
+            ci.ToDbContactInfo(contactInfo, username);
             await _context.contactInfo.AddAsync(ci);
             try
             {

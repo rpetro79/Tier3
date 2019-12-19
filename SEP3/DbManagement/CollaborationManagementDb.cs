@@ -39,7 +39,7 @@ namespace SEP3.DbManagement
 
             List<Application> apps = await ApplicationsDb.getApplicationsForProjectAsync(collaborationManagement.ProjectId, _context);
     
-            CollaborationManagement cm = collaborationManagement.toCollaborationManagement(collaboration, providers, apps);
+            CollaborationManagement cm = collaborationManagement.ToCollaborationManagement(collaboration, providers, apps);
             return cm;
         }
 
@@ -60,7 +60,7 @@ namespace SEP3.DbManagement
             DbCollaborationManagement c = _context.CollaborationManagement.Find(cm.Collaboration.ProjectId);
             if (c == null)
                 return false;
-            c.toDbCollaborationManagement(cm);
+            c.ToDbCollaborationManagement(cm);
             _context.Entry(c).State = EntityState.Modified;
             /*bool x = await CollaborationDb.PutCollaborationAsync(cm.Collaboration, _context);
             if (!x)
@@ -93,11 +93,11 @@ namespace SEP3.DbManagement
             DbCollaborationManagement c = _context.CollaborationManagement.Find(cm.Collaboration.ProjectId);
             if (c != null)
                 return false;
-            bool x = await CollaborationDb.PostCollaborationAsync(cm.Collaboration, _context);
+            bool x = await CollaborationDb.postCollaborationAsync(cm.Collaboration, _context);
             if (!x)
                 return false;
             c = new DbCollaborationManagement();
-            c.toDbCollaborationManagement(cm);
+            c.ToDbCollaborationManagement(cm);
 
             _context.CollaborationManagement.Add(c);
 

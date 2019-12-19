@@ -25,7 +25,7 @@ namespace SEP3.DbManagement
             foreach(DbApplication application in applications)
             {
                 ITProvider provider = await ITProviderDb.getITProviderAsync(application.ITproviderUsername, _context);
-                apps.Add(application.toApplication(provider));
+                apps.Add(application.ToApplication(provider));
             }
             return apps;
         }
@@ -50,14 +50,9 @@ namespace SEP3.DbManagement
                 if (dbApps == null || dbApps.Count == 0)
                     return false;
             
-                dbApps[0].toDbApplication(application);
+                dbApps[0].ToDbApplication(application);
 
                 _context.Entry(dbApps[0]).State = EntityState.Modified;
-                /*if (application.Answer.Equals("APPROVED"))
-                {
-                    DbITProvidersAssigned toAdd = new DbITProvidersAssigned(application.Provider.Username, application.ProjectId);
-                    _context.ITProvidersAssigned.Add(toAdd);
-                }*/
                 try
                 {
                     _context.SaveChanges();
@@ -77,16 +72,12 @@ namespace SEP3.DbManagement
 
         public static bool postApplication(Application application, UserContext _context)
         {
-            /*if (_context.Applications.Where(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId).Any())
-                return false;*/
-            /*if (_context.Applications.Any(ap => ap.ITproviderUsername == application.Provider.Username && ap.ProposalId == application.ProjectId))
-                return false;*/
             DateTime d = DateTime.Now;
             DateTime date = new DateTime(d.Year, d.Month, d.Day);
             application.Date = date.ToString();
             application.Answer = "NOT_ANSWERED";
             DbApplication app = new DbApplication();
-            app.toDbApplication(application);
+            app.ToDbApplication(application);
             _context.Applications.Add(app);
 
             try

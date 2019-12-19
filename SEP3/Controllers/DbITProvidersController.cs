@@ -44,22 +44,7 @@ namespace SEP3.Controllers
             return provider;
         }
 
-        /*[HttpGet("{collaborationId}")]
-        public async Task<ActionResult<ITProvider>> GetITProviderByCollaboration(string collaborationId)
-        {
-            var provider = await ITProviderDb.getITProviderFromCollaborationAsync(collaborationId, _context);
-
-            if (provider == null)
-            {
-                return NotFound();
-            }
-
-            return provider;
-        }*/
-
         // PUT: api/DbITProviders/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
         public async Task<IActionResult> PutITProvider(ITProvider provider)
         {
@@ -68,26 +53,5 @@ namespace SEP3.Controllers
                 return Accepted();
             return NotFound();
         }
-
-       /* you post credentials, not the provider
-        // POST: api/DbITProviders
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<ITProvider>> PostDbITProvider(ITProvider provider)
-        {
-            bool x = await ITProviderDb.postITProviderAsync(provider, _context);
-            if (x)
-                return Accepted();
-            return Conflict();
-        }*/
-
-        /*// DELETE: api/DbITProviders/5
-        [HttpDelete("{username}")]
-        public async Task<ActionResult<DbITProvider>> DeleteDbITProvider(string username)
-        {
-            await ITProviderDb.deleteITProviderAsync(username, _context);
-            return Ok();
-        }*/
     }
 }

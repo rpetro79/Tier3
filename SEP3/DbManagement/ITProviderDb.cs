@@ -18,7 +18,7 @@ namespace SEP3.DbManagement
 
             List<string> technologies = TechnologiesDb.getTechnologiesOfProvider(provider.Username, _context);
 
-            ITProvider pr = provider.toITProvider(contactInfo, technologies);
+            ITProvider pr = provider.ToITProvider(contactInfo, technologies);
 
             return pr;
         }
@@ -55,21 +55,21 @@ namespace SEP3.DbManagement
             if (dbIT == null)
                 return null;
             DbContactInfo contactInfo = await context.contactInfo.FindAsync(iTProviderName);
-            ContactInfo ci = contactInfo.toContactInfo();
+            ContactInfo ci = contactInfo.ToContactInfo();
             List<DbTechnologies> dbtech = await context.technologies.Where(m => m.Username == iTProviderName).ToListAsync();
             List<string> t = new List<string>();
             foreach(var db in dbtech)
             {
                 t.Add(db.Technology);
             }
-            ITProvider itp = dbIT.toITProvider(ci, t);
+            ITProvider itp = dbIT.ToITProvider(ci, t);
             return itp;
         }
 
         public async static Task<bool> putITProviderAsync(ITProvider provider, UserContext _context)
         {
             DbITProvider dbProvider = new DbITProvider();
-            List<DbTechnologies> techs = dbProvider.toDbITProvider(provider);
+            List<DbTechnologies> techs = dbProvider.ToDbITProvider(provider);
 
             bool x = await ContactInfoDb.putContactInfoAsync(provider.ContactInfo, provider.Username, _context);
             if (x == false)
@@ -100,7 +100,7 @@ namespace SEP3.DbManagement
                 return false;
 
             DbITProvider dbProvider = new DbITProvider();
-            List<DbTechnologies> techs = dbProvider.toDbITProvider(provider);
+            List<DbTechnologies> techs = dbProvider.ToDbITProvider(provider);
 
             bool x = await ContactInfoDb.postContactInfoAsync(provider.ContactInfo, provider.Username, _context);
             if (x == false)
@@ -140,26 +140,13 @@ namespace SEP3.DbManagement
             await _context.SaveChangesAsync();
         }
 
-        /*public async static Task<IEnumerable<ITProviderCredentials>> GetITProviderCredentialsAsync(UserContext _context)
-        {
-            List<ITProvider> providers = await getITProvidersAsync(_context);
-            List<ITProviderCredentials> providerCredentials = new List<ITProviderCredentials>();
-
-            foreach(ITProvider provider in providers)
-            {
-                DbCredentials cr = await _context.credentials.FindAsync(provider.Username);
-                providerCredentials.Add(cr.toITProviderCredentials(provider));
-            }
-            return providerCredentials;
-        }*/
-
         public async static Task<ITProviderCredentials> GetITProviderCredentialsAsync(string username, UserContext _context)
         {
             ITProvider provider = await getITProviderAsync(username, _context);
             if (provider == null)
                 return null;
             DbCredentials cr = await _context.credentials.FindAsync(provider.Username);
-            return cr.toITProviderCredentials(provider);
+            return cr.ToITProviderCredentials(provider);
         }
 
         public async static Task<bool> postITProviderCredentialsAsync(ITProviderCredentials credentials, UserContext _context)
@@ -168,7 +155,7 @@ namespace SEP3.DbManagement
             bool x = await postITProviderAsync(credentials.Provider, _context);
 
             DbCredentials dbCredentials = new DbCredentials();
-            dbCredentials.toDbITProviderCredentials(credentials);
+            dbCredentials.ToDbITProviderCredentials(credentials);
             _context.credentials.Add(dbCredentials);
 
              
@@ -194,11 +181,7 @@ namespace SEP3.DbManagement
         public async static Task<bool> putITProviderCredentialsAsync(ITProviderCredentials credentials, UserContext _context)
         {
             DbCredentials dbCredentials = new DbCredentials();
-            dbCredentials.toDbITProviderCredentials(credentials);
-
-           /* bool x = await putITProviderAsync(credentials.Provider, _context);
-            if (x == false)
-                return false;*/
+            dbCredentials.ToDbITProviderCredentials(credentials);
 
             _context.Entry(dbCredentials).State = EntityState.Modified;
 

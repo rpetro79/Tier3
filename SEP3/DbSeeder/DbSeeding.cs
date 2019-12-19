@@ -104,10 +104,10 @@ namespace SEP3.DbSeeder
                 DbITProvider p3 = new DbITProvider();
                 DbITProvider p4 = new DbITProvider();
 
-                p.toDbITProvider(user.Provider);
-                p2.toDbITProvider(user2.Provider);
-                p3.toDbITProvider(user3.Provider);
-                p4.toDbITProvider(user4.Provider);
+                p.ToDbITProvider(user.Provider);
+                p2.ToDbITProvider(user2.Provider);
+                p3.ToDbITProvider(user3.Provider);
+                p4.ToDbITProvider(user4.Provider);
 
                 context.ITProviders.Add(p);
                 context.ITProviders.Add(p2);
@@ -134,7 +134,7 @@ namespace SEP3.DbSeeder
                 foreach (string s in (user.Provider).Technologies)
                 {
                     DbTechnologies t = new DbTechnologies();
-                    t.toDbTechnology(user.Provider.Username, s);
+                    t.ToDbTechnology(user.Provider.Username, s);
                     context.technologies.Add(t);
                     context.SaveChanges();
                 }
@@ -142,21 +142,21 @@ namespace SEP3.DbSeeder
                 foreach (string s in (user2.Provider).Technologies)
                 {
                     DbTechnologies t = new DbTechnologies();
-                    t.toDbTechnology(user2.Provider.Username, s);
+                    t.ToDbTechnology(user2.Provider.Username, s);
                     context.technologies.Add(t);
                     context.SaveChanges();
                 }
                 foreach (string s in (user3.Provider).Technologies)
                 {
                     DbTechnologies t = new DbTechnologies();
-                    t.toDbTechnology(user3.Provider.Username, s);
+                    t.ToDbTechnology(user3.Provider.Username, s);
                     context.technologies.Add(t);
                     context.SaveChanges();
                 }
                 foreach (string s in (user4.Provider).Technologies)
                 {
                     DbTechnologies t = new DbTechnologies();
-                    t.toDbTechnology(user4.Provider.Username, s);
+                    t.ToDbTechnology(user4.Provider.Username, s);
                     context.technologies.Add(t);
                     context.SaveChanges();
                 }

@@ -15,17 +15,17 @@ namespace SEP3.Model
 
         public CollaborationManagement() { }
 
-        public CollaborationManagement(Collaboration C, bool closed, List<ITProvider> itpoc, List<Application> apps)
+        public CollaborationManagement(Collaboration collaboration, bool closed, List<ITProvider> itpoc, List<Application> apps)
         {
-            this.Collaboration = C;
+            this.Collaboration = collaboration;
             this.Closed = closed;
             this.AssignedProviders = itpoc;
             this.Applications= apps;
         }
 
-        public CollaborationManagement(Collaboration C)
+        public CollaborationManagement(Collaboration collaboration)
         {
-            this.Collaboration = C;
+            this.Collaboration = collaboration;
             AssignedProviders= new List<ITProvider>();
             Applications = new List<Application>();
         }

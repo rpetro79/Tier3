@@ -30,16 +30,6 @@ namespace SEP3.Controllers
             return await ProjectDb.getProjectsAsync(_context);
         }
 
-        /*// GET: api/Projects
-        [HttpGet("all")]
-        public async Task<ActionResult<ProjectList>> GetAllProjects()
-        {
-            ProjectList list = new ProjectList();
-            list.list = await ProjectDb.getProjectsAsync(_context);
-            return list;
-
-        }*/
-
         // GET: api/Projects/5
         [HttpGet("{projectId}")]
         public async Task<ActionResult<Project>> GetProject(string projectId)
@@ -52,8 +42,6 @@ namespace SEP3.Controllers
         }
 
         // PUT: api/Projects/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
         public async Task<IActionResult> PutProject(Project project)
         {
@@ -66,30 +54,6 @@ namespace SEP3.Controllers
             else return NotFound();
         }
 
-        /*// POST: api/Projects
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Project>> PostProject(Project project)
-        {
-            bool n = await ProjectDb.postProjectAsync(project, _context);
-
-            if(n)
-            {
-                return Accepted();
-            }
-            else return Conflict();
-        }*/
-
-        /*// DELETE: api/Projects/5
-        [HttpDelete("{projectId}")]
-        public async Task<ActionResult<DbProject>> DeleteProject(string projectId)
-        {
-            await ProjectDb.deleteProject(projectId, _context);
-
-            return Ok();
-        }*/
-   
         [HttpGet("customer/{customerUsername}")]
         public async Task<ActionResult<List<Project>>> GetAllProjectsByCustomerUsername(String customerUsername)
         {

@@ -36,7 +36,7 @@ namespace SEP3.DbManagement
             }
 
             Customer c = await CustomerDb.getCustomerAsync(project.customerUsername, _context);
-            Project pr = project.toProject(c);
+            Project pr = project.ToProject(c);
             return pr;
         }
 
@@ -46,7 +46,7 @@ namespace SEP3.DbManagement
             DbProject p = _context.Projects.Find(project.ProjectId);
             if (p == null)
                 return false;
-            p.toDbProject(project);
+            p.ToDbProject(project);
             _context.Entry(p).State = EntityState.Modified;
 
             try
@@ -83,7 +83,7 @@ namespace SEP3.DbManagement
             }
 
             DbProject dbProject = new DbProject();
-            dbProject.toDbProject(project);
+            dbProject.ToDbProject(project);
             _context.Projects.Add(dbProject);
             try
             {
@@ -106,7 +106,7 @@ namespace SEP3.DbManagement
 
                 c = await CustomerDb.getCustomerAsync(p.customerUsername, _context);
                 if (c.Username == customerUsername)
-                    pr.Add(p.toProject(c));
+                    pr.Add(p.ToProject(c));
             }
             return pr;
         }
@@ -133,13 +133,5 @@ namespace SEP3.DbManagement
                 _context.SaveChanges();
             }
         }
-
-        private static bool ProjectExists(string id, UserContext _context)
-        {
-            return _context.Projects.Any(e => e.ProjectId == id);
-        }
-
-
-
     }
 }

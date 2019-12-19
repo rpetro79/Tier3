@@ -22,7 +22,7 @@ namespace SEP3.DbModel
 
         public DbITProvidersAssigned() { }
 
-        public bool Equals(Object obj)
+        public bool Equals(object obj)
         {
             if (obj is ITProvider)
                 return ((ITProvider)obj).Username == ProviderUsername;

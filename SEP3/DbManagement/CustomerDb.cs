@@ -52,7 +52,7 @@ namespace SEP3.DbManagement
             DbCredentials cr = _context.credentials.Find(credentials.Customer.Username);
             if (cr == null)
                 return false;
-            cr.toDbCustomerCredentials(credentials);
+            cr.ToDbCustomerCredentials(credentials);
 
             /*bool x = await putCustomerAsync(credentials.Customer, _context);
             if (x == false)
@@ -73,7 +73,7 @@ namespace SEP3.DbManagement
         public async static Task<bool> postCustomerCredentialsAsync(CustomerCredentials credentials, UserContext _context)
         {
             DbCredentials dbCustomerCredentials = new DbCredentials();
-            dbCustomerCredentials.toDbCustomerCredentials(credentials);
+            dbCustomerCredentials.ToDbCustomerCredentials(credentials);
             await _context.credentials.AddAsync(dbCustomerCredentials);
 
             bool x = await postCustomerAsync(credentials.Customer, _context);
@@ -105,7 +105,7 @@ namespace SEP3.DbManagement
 
             ContactInfo ci = await ContactInfoDb.getContactInfoAsync(customerUsrename, _context);
 
-            return customer.toCustomer(ci);
+            return customer.ToCustomer(ci);
         }
         public async static Task deleteCredentialsAsync(string username, UserContext _context)
         {
@@ -129,7 +129,7 @@ namespace SEP3.DbManagement
 
             ContactInfo ci = await ContactInfoDb.getContactInfoAsync(username, _context);
 
-            return customer.toCustomer(ci);
+            return customer.ToCustomer(ci);
         }
 
         public async static Task<IEnumerable<Customer>> getCustomersAsync(UserContext _context)
@@ -139,19 +139,19 @@ namespace SEP3.DbManagement
             foreach(DbCustomer cust in custs)
             {
                 ContactInfo ci = await ContactInfoDb.getContactInfoAsync(cust.Username, _context);
-                customers.Add(cust.toCustomer(ci));
+                customers.Add(cust.ToCustomer(ci));
             }
             return customers;
         }
 
-        public async static Task<bool> putCustomerAsync(Customer cust, UserContext _context)
+        public async static Task<bool> putCustomerAsync(Customer customer, UserContext _context)
         {
-            var c = _context.customers.Find(cust.Username);
+            var c = _context.customers.Find(customer.Username);
             if (c == null)
                 return false;
-            c.toDbCustomer(cust);
+            c.ToDbCustomer(customer);
 
-            bool x = await ContactInfoDb.putContactInfoAsync(cust.ContactInfo, cust.Username, _context);
+            bool x = await ContactInfoDb.putContactInfoAsync(customer.ContactInfo, customer.Username, _context);
             if(x == false)
             {
                 return false;
@@ -176,7 +176,7 @@ namespace SEP3.DbManagement
             if (_context.customers.Any(c => c.Username == customer.Username))
                 return false;
             DbCustomer cust = new DbCustomer();
-            cust.toDbCustomer(customer);
+            cust.ToDbCustomer(customer);
             await _context.customers.AddAsync(cust);
 
             try

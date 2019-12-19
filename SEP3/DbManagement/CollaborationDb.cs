@@ -25,6 +25,41 @@ namespace SEP3.DbManagement
             return collaborations;
         }
 
+        public async static Task<bool> postCollaborationAsync(Collaboration collaboration, UserContext _context)
+        {
+            List<DbCollaboration> collaborations= _context.Collaborations.Where(p => p.ITProviderName == collaboration.ITProvider.Username).ToList<DbCollaboration>();
+            if (collaborations.Count == 0)
+            {
+                collaboration.ProjectId = collaboration.ITProvider.Username + 1;
+            }
+            else
+            {
+                int n = collaboration.ITProvider.Username.Length;
+                int number;
+                int max = 1;
+                foreach (DbCollaboration p in collaborations)
+                {
+                    number = Int32.Parse(p.CollaborationId.Substring(n));
+                    if (max < number)
+                        max = number;
+                }
+                collaboration.ProjectId = collaboration.ITProvider.Username + (max + 1);
+            }
+
+            DbCollaboration dbCollaboration = new DbCollaboration();
+            dbCollaboration.ToDbCollaboration(collaboration);
+            _context.Collaborations.Add(dbCollaboration);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
 
         public async static Task<List<Collaboration>> getCollaborationsOfUserAsync(string username, UserContext _context)
@@ -128,15 +163,5 @@ namespace SEP3.DbManagement
             return true;
         }
 
-        //Delete all collaborations from an It provider
-        public async static Task DeleteAllCollaborationsFromITProvider(string Username, UserContext _context)
-        {
-            var collaborations = _context.Collaborations.Where(c => c.ITProviderName == Username).ToList<DbCollaboration>();
-            foreach (var collaboration in collaborations)
-            {
-                _context.Collaborations.Remove(collaboration);
-                _context.SaveChanges();
-            }
-        }
     }
 }

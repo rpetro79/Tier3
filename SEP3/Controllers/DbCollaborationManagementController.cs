@@ -26,7 +26,7 @@ namespace SEP3.Controllers
 
             // GET: api/DbCollaborationManagement
             [HttpGet("{projectId}")]
-            public async Task<ActionResult<CollaborationManagement>> GetCollaborationManagement(string projectId, string username)
+            public async Task<ActionResult<CollaborationManagement>> GetCollaborationManagement(string projectId)
             {
                 var collaborationManagement = await CollaborationManagementDb.getCollaborationManagementAsync(projectId, _context);
                 if (collaborationManagement == null)
@@ -48,19 +48,8 @@ namespace SEP3.Controllers
                 return collaborationsManagement;
             }
 
-           /* [HttpGet("id/{projectId}")]
-            public async Task<ActionResult<CollaborationManagement>> GetCollaborationManagementById(string projectId)
-            {
-                
-                var projectCollaboration = await CollaborationManagementDb.getCollaborationManagementAsync(projectId, _context);
-                if (projectCollaboration == null)
-                    return NotFound();
-                return projectCollaboration;
-            }*/
-
+        
             // PUT: api/DbCollaborationManagement/5
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-            // more details see https://aka.ms/RazorPagesCRUD.
             [HttpPut]
             public async Task<IActionResult> PutDbCollaborationManagement(CollaborationManagement collaborationManagement)
             {
@@ -72,8 +61,6 @@ namespace SEP3.Controllers
             }
 
             // POST: api/DbCollaborationManagement
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-            // more details see https://aka.ms/RazorPagesCRUD.
             [HttpPost]
             public async Task<ActionResult<DbCollaborationManagement>> PostDbCollaborationManagement(CollaborationManagement collaborationManagement)
             {
@@ -86,7 +73,7 @@ namespace SEP3.Controllers
 
             // DELETE: api/DbCollaborationManagement/5
             [HttpDelete("{projectId}")]
-            public async Task<ActionResult<DbProjectManagement>> DeleteDbCollaborationtManagement(string projectId)
+            public async Task<ActionResult<DbCollaborationManagement>> DeleteDbCollaborationtManagement(string projectId)
             {
                 await CollaborationManagementDb.deleteCollaborationManagement(projectId, _context);
 

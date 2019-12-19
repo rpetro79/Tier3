@@ -8,9 +8,6 @@ using Newtonsoft.Json.Converters;
 
 namespace SEP3.Model
 {
-    [JsonConverter(typeof(StringEnumConverter))]
-
-
     public class Application
     {
         public string ProjectId { get; set; }

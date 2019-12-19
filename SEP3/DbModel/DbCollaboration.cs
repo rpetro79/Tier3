@@ -30,10 +30,5 @@ namespace SEP3.DbModel
         {
             return new Collaboration(CollaborationId, iTProvider, CollaborationName, Description, Category);
         }
-
-        internal Collaboration toCollaboration(ITProvider itp)
-        {
-            return new Collaboration(CollaborationId, itp, CollaborationName, Description, Category);
-        }
     }
 }

@@ -21,15 +21,6 @@ namespace SEP3.Controllers
             _context = context;
         }
 
-        /*[HttpGet("all")]
-        public async Task<ActionResult<CollaborationList>> GetAllCollaborations()
-        {
-            CollaborationList list = new CollaborationList();
-            list.list = await CollaborationDb.getAllCollaborationsAsync(_context);
-            return list;
-
-        }*/
-
         //GET: api/Collaborations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Collaboration>>> GetCollaborations()
@@ -37,7 +28,7 @@ namespace SEP3.Controllers
             return await CollaborationDb.GetCollaborationsAsync(_context);
         }
 
-        
+
         [HttpGet("user/{username}")]
         public async Task<ActionResult<List<Collaboration>>> GetCollaborationManagementOfUser(string username)
         {
@@ -60,46 +51,5 @@ namespace SEP3.Controllers
                 return NotFound();
             return Collaboration;
         }
-
-        //Post: api/Collaborations
-       /* [HttpPost]
-        public async Task<ActionResult> PostCollaboration(Collaboration collaboration)
-        {
-            bool isApproved = await CollaborationDb.PostCollaborationAsync(collaboration, _context);
-            if (isApproved)
-                return Accepted();
-            else
-                return Conflict();
-        }*/
-
-        //PUT: api/Collaborations/3
-        [HttpPut]
-        public async Task<IActionResult> PutCollaboration(Collaboration collaboration)
-        {
-            bool isApproved = await CollaborationDb.PutCollaborationAsync(collaboration, _context);
-
-            if (isApproved)
-                return Accepted();
-            else return NotFound();
-        }
-
-        /*//Delete: api/Projects/3
-        [HttpDelete("{CollaborationId}")]
-        public async Task<ActionResult> DeleteCollaboration(string collaborationId)
-        {
-            bool isApproved = await CollaborationDb.DeleteCollaboration(collaborationId, _context);
-            if (isApproved)
-                return Accepted();
-            else
-                return Conflict();
-        }*/
-
-        /*//Delete api/Projects/leksi12
-        [HttpDelete("{ITProviderName}")]
-        public async Task<ActionResult> DeleteCollaborationsFrom(string username)
-        {
-            await CollaborationDb.DeleteAllCollaborationsFromITProvider(username, _context);
-            return Accepted();
-        }*/
     }
 }

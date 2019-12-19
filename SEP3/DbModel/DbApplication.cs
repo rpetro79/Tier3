@@ -19,12 +19,12 @@ namespace SEP3.DbModel
 
         public DbApplication() { }
 
-        public Application toApplication(ITProvider provider)
+        public Application ToApplication(ITProvider provider)
         {
             return new Application(ProjectId, provider, ApplicationText, Date, Answer);
         }
 
-        public void toDbApplication(Application app)
+        public void ToDbApplication(Application app)
         {
             this.ProjectId = app.ProjectId;
             this.ITproviderUsername = app.Provider.Username;

@@ -25,7 +25,7 @@ namespace SEP3.Controllers
 
         // GET: api/DbProjectManagements
         [HttpGet("{projectId}")]
-        public async Task<ActionResult<ProjectManagement>> GetProjectManagement(string projectId, string username)
+        public async Task<ActionResult<ProjectManagement>> GetProjectManagement(string projectId)
         {
             var projectManagement = await ProjectManagementDb.getProjectManagementAsync(projectId, _context);
             if (projectManagement == null)
@@ -46,37 +46,8 @@ namespace SEP3.Controllers
 
             return projectsManagement;
         }
-
-        /*[HttpGet("id/{projectId}")]
-        public async Task<ActionResult<ProjectManagement>> GetProjectManagementById(string projectId)
-        {
-            //ProjectManagement projectManagement = await ProjectManagementDb.getProjectsManagementAsync(projectId, _context);
-
-            //if (projectManagement == null)
-            //{
-            //    return NotFound();
-            //}
-            //return projectManagement;
-
-            var projectManagement = await ProjectManagementDb.getProjectManagementAsync(projectId, _context);
-            if (projectManagement == null)
-                return NotFound();
-            return projectManagement;
-        }*/
-
-        /*[HttpGet("isClosed/{projectId}")]
-        public async Task<ActionResult<bool>> GetProjectIsClosed(string projectId)
-        {
-
-            var projectManagement = await ProjectManagementDb.getProjectManagementAsync(projectId, _context);
-            if (projectManagement == null)
-                return NotFound();
-            return projectManagement.Closed;
-        }*/
-
+       
         // PUT: api/DbProjectManagements/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
         public async Task<IActionResult> PutDbProjectManagement(ProjectManagement projectManagement)
         {
@@ -88,8 +59,6 @@ namespace SEP3.Controllers
         }
 
         // POST: api/DbProjectManagements
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<DbProjectManagement>> PostDbProjectManagement(ProjectManagement projectManagement)
         {

@@ -13,7 +13,7 @@ namespace SEP3.DbModel
         public string Username { get; set; }
         public string Technology { get; set; }
 
-        public void toDbTechnology(string username, string tech)
+        public void ToDbTechnology(string username, string tech)
         {
             this.Username = username;
             this.Technology = tech;

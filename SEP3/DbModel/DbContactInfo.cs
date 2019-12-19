@@ -15,7 +15,7 @@ namespace SEP3.DbModel
         public string PhoneNo { get; set; }
         public string Email { get; set; }
 
-        public void toDbContactInfo(ContactInfo ci, string username)
+        public void ToDbContactInfo(ContactInfo ci, string username)
         {
             this.Username = username;
             this.Address = ci.Address;
@@ -23,7 +23,7 @@ namespace SEP3.DbModel
             this.Email = ci.Email;
         }
 
-        public ContactInfo toContactInfo()
+        public ContactInfo ToContactInfo()
         {
             return new ContactInfo(Address, PhoneNo, Email);
         }

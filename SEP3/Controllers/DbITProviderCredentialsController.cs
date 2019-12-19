@@ -23,13 +23,6 @@ namespace SEP3.Controllers
             _context = context;
         }
 
-        /*// GET: api/DbITProviderCredentials
-        [HttpGet]
-        public async Task<IEnumerable<ITProviderCredentials>> GetDbITProviderCredentials()
-        {
-            return await ITProviderDb.GetITProviderCredentialsAsync(_context);
-        }*/
-
         // GET: api/DbITProviderCredentials/5
         [HttpGet("{username}")]
         public async Task<ActionResult<ITProviderCredentials>> GetDbITProviderCredentials(string username)
@@ -41,8 +34,6 @@ namespace SEP3.Controllers
         }
 
         // PUT: api/DbITProviderCredentials/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
         public async Task<IActionResult> PutDbITProviderCredentials(ITProviderCredentials credentials)
         {
@@ -59,8 +50,6 @@ namespace SEP3.Controllers
         }
 
         // POST: api/DbITProviderCredentials
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<DbITProviderCredentials>> PostDbITProviderCredentials(ITProviderCredentials credentials)
         {
